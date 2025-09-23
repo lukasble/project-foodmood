@@ -1,58 +1,70 @@
+<?php
+$allergens = [
+  'dairy' => ['label' => 'Dairy', 'desc' => 'Milk, cheese, yogurt, butter, etc.'],
+  'gluten' => ['label' => 'Gluten', 'desc' => 'Wheat, barley, rye, and products made from them.'],
+  'legumes' => ['label' => 'Legumes', 'desc' => 'Beans, lentils, peas, peanuts.'],
+  'cruciferous' => ['label' => 'Cruciferous Vegetables', 'desc' => 'Broccoli, cauliflower, cabbage, Brussels sprouts.'],
+  'alliums' => ['label' => 'Alliums', 'desc' => 'Onion, garlic, leeks, shallots.'],
+  'fruits' => ['label' => 'Fruits', 'desc' => 'Various fruits; specify particular ones if needed.'],
+  'sugar_alcohols' => ['label' => 'Sugar Alcohols and Artificial Sweeteners', 'desc' => 'e.g., xylitol, sorbitol, aspartame.'],
+  'highfat' => ['label' => 'High-Fat and Fried Foods', 'desc' => 'Fried and very fatty foods.'],
+  'spicy' => ['label' => 'Spicy Foods', 'desc' => 'Heavily spiced foods (e.g., chili).'],
+  'acidic' => ['label' => 'Acidic Foods', 'desc' => 'Citrus, tomato, vinegar, etc.'],
+  'caffeine' => ['label' => 'Caffeine', 'desc' => 'Coffee, tea, energy drinks, chocolate.'],
+  'alcohol' => ['label' => 'Alcohol', 'desc' => 'All alcoholic beverages.'],
+  'processed' => ['label' => 'Processed Foods', 'desc' => 'Cured meats and ready-made products with additives.'],
+];
+?>
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>entry</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Entry</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
+<body>
 <div class="container">
-    <body>
-    <p>Enter meal:</p><br>
 
-    <form action="insert.html" method="POST">
-        <label>Meal Name:</label>
-        <input type="text" name="name"><br>
+  <p>Enter meal:</p><br>
 
-        <?php
-        $allergens = [
-            "dairy" => "Dairy",
-            "gluten" => "Gluten",
-            "legumes" => "Legumes",
-            "cruciferous" => "Cruciferous Vegetables",
-            "alliums" => "Alliums",
-            "fruits" => "Fruits",
-            "sugar_alcohols" => "Sugar Alcohols and Artificial Sweeteners",
-            "highfat" => "High-Fat and Fried Foods",
-            "spicy" => "Spicy Foods",
-            "acidic" => "Acidic Foods",
-            "caffeine" => "Caffeine",
-            "alcohol" => "Alcohol",
-            "processed" => "Processed Foods"
-        ];
-        ?>
+  <form action="insert.html" method="POST">
+    <label for="name">Meal Name:</label>
+    <input type="text" id="name" name="name"><br>
 
-        <p>Allergens:</p><br>
+    <fieldset class="allergen-fieldset">
+      <legend>Allergens</legend>
+      <?php foreach ($allergens as $key => $data): 
+        $id = "allergen_$key";
+        $tipId = "tip_$key";
+        $label = htmlspecialchars($data['label'], ENT_QUOTES, 'UTF-8');
+        $desc  = htmlspecialchars($data['desc'], ENT_QUOTES, 'UTF-8');
+      ?>
+        <div class="allergen">
+          <input
+            type="checkbox"
+            id="<?= $id ?>"
+            name="<?= $id ?>"
+            value="1"
+            aria-describedby="<?= $tipId ?>"
+            title="<?= $desc ?>" />
+          <label for="<?= $id ?>"><?= $label ?></label>
+          <div id="<?= $tipId ?>" class="tooltip" role="tooltip">
+            <?= $desc ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </fieldset><br>
 
-        <?php foreach ($allergens as $key => $label): ?>
-            <label for="allergen_<?php echo $key; ?>"><?php echo $label; ?>:</label>
-            <input type="checkbox" id="allergen_<?php echo $key; ?>" 
-                name="allergen_<?php echo $key; ?>" value="1"><br>
-        <?php endforeach; ?>
+    <label for="state">State:</label>
+    <select name="state" id="state">
+      <option value="0">No ache</option>
+      <option value="1">Tummy ache</option>
+    </select><br><br>
 
+    <input type="submit" value="Add Meal">
+  </form><br>
 
-        <label>State:</label>
-        <select name="state" id="state">
-            <option value="0">No ache</option>
-            <option value="1">Tummy ache</option>
-        </select><br>
-
-        <input type="submit" value="Add Meal">
-    
-    </form><br>
-    </body>
+  <a href="index.html" class="btn">Back to index</a>
 </div>
+</body>
 </html>
-
-
-<a href="index.html" class="btn">Back to index</a>
