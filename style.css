@@ -1,0 +1,16 @@
+/* Styling for index.html
+
+body {
+    min-height: 100vh;
+
+    background-image: url();
+    background-size: cover;
+
+    /* Creating a flex-box out of the body so we can center its content*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
