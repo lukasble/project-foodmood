@@ -13,14 +13,18 @@
         <h2>/Login</h2>
         <form action="db.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="password" placeholder="Password" required>
+            <input type="password" name="password" placeholder="Password" required>
             <buttom type="submit" name="login">/Login</buttom>
         </form>
 
-    <form action="insert.html" method="get">
-        buttom type="submit" class="create-account-btn">Create account</buttom>
-    </form>
-        
+    // Delete later, create account buttom
+        <form action="register.php" method="post">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <buttom type="submit" name="register" class="create-account-btn">/Create account</buttom>
+        </form>
+    </div>
+    
 </body>
 
 <a href="entry.php" class="btn">Add Entry</a>
