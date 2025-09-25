@@ -1,54 +1,81 @@
 <?php
+// insert.php
 include 'db.php';
 
-// Fetch data from POST request
-$meal_name = $_POST['name'];
-$experience = $_POST['experience'];
-$dairy = $_POST['dairy'];
-$gluten = $_POST['gluten'];	
-$legumes = $_POST['legumes'];
-$cruciferous_vegetables = $_POST['cruciferous_vegetables'];
-$alliums = $_POST['alliums'];
-$fruits = $_POST['fruits'];
-$sugar_alcohols_artificial_sweeteners = $_POST['sugar_alcohols_artificial_sweeteners'];
-$high_fat_fried = $_POST['high_fat_fried'];
-$spicy = $_POST['spicy'];
-$acidic = $_POST['acidic'];
-$caffeine = $_POST['caffeine'];	
-$alcohol = $_POST['alcohol'];
-$processed_food = $_POST['processed_food'];
+// Hardcoded user_id until login is ready
+$user_id = 1;
 
-$sql = "INSERT INTO meal_logs (meal_name, experience, dairy, gluten, legumes, cruciferous_vegetables, alliums, fruits, sugar_alcohols_artificial_sweeteners, high_fat_fried, spicy, acidic, caffeine, alcohol, processed_food) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-$stmt = $link->prepare($sql);
-
-// s for string i for integer
-$stmt->bind_param(
-    "ssiiiiiiiiiiiii", 
-    $meal_name, 
-    $experience, 
-    $dairy, 
-    $gluten, 
-    $legumes, 
-    $cruciferous_vegetables, 
-    $alliums, 
-    $fruits, 
-    $sugar_alcohols_artificial_sweeteners, 
-    $high_fat_fried, 
-    $spicy, 
-    $acidic, 
-    $caffeine, 
-    $alcohol, 
-    $processed_food
-);
-$result = $stmt->execute();
-
-    
-if ($result) {        
-    $message = "New record created successfully!";
-} else {
-    $message = "Error: " . $stmt->error;
+function flag($key) {
+  return isset($_POST[$key]) ? (int) ($_POST[$key] ? 1 : 0) : 0;
 }
 
-// Close the database connection
+$meal_name = isset($_POST['name']) && $_POST['name'] !== '' ? trim($_POST['name']) : null;
+
+// eaten_at: datetime-local to Y-m-d H:i:s
+if (!empty($_POST['eaten_at'])) {
+  $eaten_at_raw = $_POST['eaten_at'];
+  $eaten_at = str_replace('T', ' ', $eaten_at_raw) . (strlen($eaten_at_raw) === 16 ? ':00' : '');
+} else {
+  $eaten_at = date('Y-m-d H:i:s');
+}
+
+$experience = isset($_POST['experience']) ? (int) $_POST['experience'] : 0;
+
+// Flags
+$dairy = flag('dairy');
+$gluten = flag('gluten');
+$legumes = flag('legumes');
+$cruciferous_vegetables = flag('cruciferous_vegetables');
+$alliums = flag('alliums');
+$fruits = flag('fruits');
+$sugar_alcohols_artificial_sweeteners = flag('sugar_alcohols_artificial_sweeteners');
+$high_fat_fried = flag('high_fat_fried');
+$spicy = flag('spicy');
+$acidic = flag('acidic');
+$caffeine = flag('caffeine');
+$alcohol = flag('alcohol');
+$processed_food = flag('processed_food');
+
+$sql = "INSERT INTO meal_logs
+(user_id, meal_name, eaten_at, experience,
+ dairy, gluten, legumes, cruciferous_vegetables, alliums, fruits,
+ sugar_alcohols_artificial_sweeteners, high_fat_fried, spicy, acidic, caffeine, alcohol, processed_food)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+$stmt = $link->prepare($sql);
+if (!$stmt) {
+  exit('Prepare failed: ' . $link->error);
+}
+
+$stmt->bind_param(
+  "issiiiiiiiiiiiiii",
+  $user_id,
+  $meal_name,
+  $eaten_at,
+  $experience,
+  $dairy,
+  $gluten,
+  $legumes,
+  $cruciferous_vegetables,
+  $alliums,
+  $fruits,
+  $sugar_alcohols_artificial_sweeteners,
+  $high_fat_fried,
+  $spicy,
+  $acidic,
+  $caffeine,
+  $alcohol,
+  $processed_food
+);
+
+
+$result = $stmt->execute();
+
+if ($result) {
+  echo "New record created successfully!";
+} else {
+  echo "Error: " . $stmt->error;
+}
+
+$stmt->close();
 $link->close();
-?>
