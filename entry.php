@@ -69,7 +69,7 @@ $allergens = [
     <input type="submit" value="Add Meal">
   </form><br>
 
-  <a href="index.html" class="btn">Back to index</a>
+  <a href="home.php" class="btn">Back to home</a>
 </div>
 
 <script>
