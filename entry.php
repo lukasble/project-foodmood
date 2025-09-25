@@ -55,8 +55,8 @@ $allergens = [
       <?php endforeach; ?>
     </fieldset><br>
 
-    <label for="state">State:</label>
-    <select name="state" id="state">
+    <label for="eperience">State:</label>
+    <select name="eperience" id="eperience">
       <option value="0">No ache</option>
       <option value="1">Tummy ache</option>
     </select><br><br>
