@@ -8,7 +8,8 @@
 
 <body>
 <div class="container">
-    <a href="entry.php" class="btn">Add entry</a>
-    <a href="statistics.html" class="btn">Show statistics</a>
+    <a href="entry.php" class="btn">Add entry</a><br>
+    <a href="experience.php" class="btn">Add experinence</a><br>
+    <a href="statistics.html" class="btn">Show statistics</a><br>
 </div>
 </body> 
