@@ -66,7 +66,7 @@ $allergens = [
       <?php endforeach; ?>
     </fieldset><br>
 
-    <input type="submit" value="Add Meal">
+    <input type="submit" class="btn" value="Add Meal">
   </form><br>
 
   <a href="home.php" class="btn">Back to home</a>

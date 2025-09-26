@@ -1,19 +1,35 @@
-/* Styling for index.html
-
 body {
-    min-height: 100vh;
-
-    background-image: url();
-    background-size: cover;
-
-    /* Creating a flex-box out of the body so we can center its content*/
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Times New Roman', Times, serif;
+    height: 100vh;
+    margin: 0;
 }
 
+.container {
+    text-align: left; 
+    width: 300px;      
+}
+
+.btn {
+    display: block;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none; 
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background-color: #004999;
+}
 
 /* entry.php begin */
 .allergen-fieldset {
