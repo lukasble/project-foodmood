@@ -5,6 +5,9 @@ include 'db.php';
 // Hardcoded user_id until login is ready
 $user_id = 1;
 
+// consider using $_SESSION instead
+// https://medium.com/@jpmorris/how-to-build-a-php-login-form-using-sessions-c7fb6d8ecebe
+
 function flag($key) {
   return isset($_POST[$key]) ? (int) ($_POST[$key] ? 1 : 0) : 0;
 }
