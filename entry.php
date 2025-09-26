@@ -19,7 +19,7 @@ $allergens = [
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Meal</title>
+  <title>Foodmood: Add Meal</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,7 +28,7 @@ $allergens = [
   <h1>Add Meal</h1>
 
   <form action="insert.php" method="POST" autocomplete="off">
-    <label for="name">Meal Name (optional):</label>
+    <label for="name">Meal Name:</label>
     <input type="text" id="name" name="name" maxlength="150"><br>
 
     <label for="eaten_at">When did you eat it?</label>

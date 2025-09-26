@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home</title>
+  <title>FoodMood: Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,3 +11,4 @@
     <a href="entry.php" class="btn">Add entry</a>
     <a href="statistics.html" class="btn">Show statistics</a>
 </div>
+</body> 
