@@ -1,3 +1,10 @@
+<?php
+// index.php - login page
+session(start);
+include: 'db.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,21 +18,15 @@
 <body>
     <div class="login-container">
         <h2>/Login</h2>
-        <form action="db.php" method="post">
+        <form action="index.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <buttom type="submit" name="login">/Login</buttom>
         </form>
 
-    // Delete later, create account buttom
-        <form action="register.php" method="post">
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <buttom type="submit" name="register" class="create-account-btn">/Create account</buttom>
-        </form>
-    </div>
-    
+    // Create account button
+        <p>Don't have an account?</p>
+        <a href="register.php"><button type="button" class="create-account-btn">/Create account</button>button></a>
+    </div>  
 </body>
-
-
 </html>
