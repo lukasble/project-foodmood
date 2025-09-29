@@ -5,9 +5,7 @@ body {
     font-family: Arial, sans-serif;
     color: #000;
     background: url("FoodMood_logo.png") no-repeat center center fixed;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-size: cover;
 }
 
 
