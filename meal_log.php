@@ -12,19 +12,18 @@ include 'db.php';
 </head>
 <body>
 
-<a href="home.php" class="btn">Back to home</a>
-
 <div class="meal-log-container">
-    <h1>My Meal Logs</h1>
+    <h1>My Meal Log</h1>
 
     <?php
-
-    echo '<table><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr>';
-
+  
     $sql = "SELECT meal_name, eaten_at, experience FROM meal_logs";
 
     $result = $link->query($sql);
 
+    echo '<table class="meal-log-table">';
+    echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
+    echo '<tbody>';
 
     while($row = $result->fetch_assoc()) { 
                                           
@@ -42,11 +41,18 @@ include 'db.php';
     ?>
 
 </div>
+
+<a href="home.php" class="btn">Back to home</a>
+
+<a href="analysis_basic.php" class="btn">Make Basic Frequency Analysis</a>
+
 </body>
 </html>
 
 
-
-//Namn Tid Mag reaktion Knapp där det står beräkna statistik/analysera data
 //Show ## entries button
+//FIxa bad or good experience
 //Koppla artiklar till mest visade, knapp för att visa meals som oftast ger positiva eller negativa reaktioner
+//Kunna ändra experience på en måltid
+//Visa i rätt ordning
+
