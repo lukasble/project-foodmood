@@ -45,7 +45,13 @@ $link->close();
 
 <body>
     <div class="login-container">
+
+        <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
+        
         <h2>/Login</h2>
+        
+        <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
+
         <form action="index.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
