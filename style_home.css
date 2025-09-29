@@ -1,3 +1,6 @@
+/* ---------------- */
+/* ----- Body ----- */
+/* -----------------*/
 
 body {
     margin: 0;
@@ -8,6 +11,9 @@ body {
     background-size: cover;
 }
 
+/* ------------------- */
+/* Container box class */
+/* ------------------- */
 
 .container {
     display: flex;
@@ -23,12 +29,38 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+/* ------------ */
+/* Button class */
+/* ------------ */
 
 .btn {
     display: inline-block;
+    width: 100%;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ffa500;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 
 .btn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(-2px);
+}
 
+/* ----------------- */
+/* Allergen tooltip  */
+/* ----------------- */
+
+.allergen-fieldset {
+  border: 1px solid #e3e3e3;
+  border-radius: .5rem;
+  padding: 1rem 1rem .6rem;
 }
