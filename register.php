@@ -20,6 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])); {
     } else {
         $error = "Error: " . $stmt->error;
     }
+
+    $stmt->close();
+    $link->close();
+
 }
 ?>
 
@@ -54,6 +58,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])); {
 
 </body>
 </html>
-
-$stmt->close();
-$link->close();
