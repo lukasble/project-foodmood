@@ -1,0 +1,26 @@
+INSERT INTO meal_logs (
+  user_id, meal_name, eaten_at, experience,
+  dairy, gluten, legumes, cruciferous_vegetables, alliums, fruits,
+  sugar_alcohols_artificial_sweeteners, high_fat_fried, spicy, acidic,
+  caffeine, alcohol, processed_food
+) VALUES
+(1, 'Breakfast - Yogurt with berries', '2025-09-01 08:00:00', 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Lunch - Pasta with tomato sauce', '2025-09-01 12:30:00', 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0),
+(1, 'Dinner - Grilled chicken and broccoli', '2025-09-01 19:00:00', 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Snack - Protein bar', '2025-09-02 10:00:00', 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(1, 'Breakfast - Coffee and toast', '2025-09-02 08:15:00', 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0),
+(1, 'Lunch - Lentil soup', '2025-09-02 12:00:00', 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Dinner - Pizza', '2025-09-02 19:30:00', 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+(1, 'Snack - Apple', '2025-09-03 15:00:00', 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Breakfast - Scrambled eggs and bacon', '2025-09-03 08:00:00', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Lunch - Burrito with beans', '2025-09-03 12:15:00', 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1),
+(1, 'Dinner - Steak and fries', '2025-09-03 20:00:00', 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
+(1, 'Snack - Chocolate cake', '2025-09-04 16:00:00', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(1, 'Breakfast - Smoothie with banana', '2025-09-04 08:10:00', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Lunch - Salad with chickpeas', '2025-09-04 12:20:00', 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Dinner - Sushi', '2025-09-04 19:30:00', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 'Breakfast - Croissant and coffee', '2025-09-05 08:30:00', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0),
+(1, 'Lunch - Burger and fries', '2025-09-05 12:40:00', 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1),
+(1, 'Dinner - Stir fry with tofu and cabbage', '2025-09-05 19:10:00', 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0),
+(1, 'Snack - Orange juice', '2025-09-06 10:00:00', 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0),
+(1, 'Dinner - Spicy curry with rice', '2025-09-06 20:00:00', 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1);
