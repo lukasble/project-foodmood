@@ -1,4 +1,7 @@
 
+<?php
+include 'db.php';
+?>
 
 <!DOCTYPE html>
 
@@ -7,6 +10,7 @@
     <title>FoodMood: Statistics</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body>
 
 <a href="home.php" class="btn">Back to home</a>
 
@@ -14,12 +18,10 @@
     <h1>My Meal Logs</h1>
 
     <?php
-    include 'db.php';
 
     echo '<table><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr>';
 
-    $sql = "SELECT meal_name, eaten_at, experience
-        FROM meal_logs;
+    $sql = "SELECT meal_name, eaten_at, experience FROM meal_logs";
 
     $result = $link->query($sql);
 
@@ -31,11 +33,17 @@
                 <td>" . $row["eaten_at"] . "</td>
                 <td>" . $row["experience"] . "</td>
               </tr>";
-}
+        }
 
-echo '</table>';
+    echo '</tbody></table>';
+
+    $link->close();
+    
     ?>
+
 </div>
+</body>
+</html>
 
 
 
