@@ -1,25 +1,25 @@
 <?php
 // index.php - login page
 session_start();
-include: 'db.php';
+include 'db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])); {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     $stmt = $link->prepare("SELECT id, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
-    $result = stmt->get_result();
+    $result = $stmt->get_result();
 
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
 
-        if (password_verify($password, $row['password'])); {
+        if (password_verify($password, $row['password_hash'])) {
             // Save user session
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['email'] = $email;
-            header("Location: home.php";
+            header("Location: home.php");
             exit();
         } else {
             $error = "Invalid password.";
