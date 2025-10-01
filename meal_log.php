@@ -43,11 +43,6 @@ $result = $link->query($sql);
 </head>
 <body>
 
-<!-- Move to .css later -->
-
-
-
-<!-- -->
 
 <div class="meal-log-container">
     <h1>My Meal Log</h1>
