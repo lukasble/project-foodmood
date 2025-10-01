@@ -57,9 +57,5 @@ CREATE TABLE research_articles (
   url VARCHAR(500) NOT NULL,
   summary TEXT NULL,               -- Summary text
   category VARCHAR(100) NOT NULL   -- add which categories are included in the article
-<<<<<<< HEAD
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-=======
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
->>>>>>> 6fe348769278408af85c4fd338efbead8c254ecf
