@@ -8,7 +8,7 @@ include 'db.php';
 <head>
     <meta charset="UTF-8">
     <title>FoodMood: Statistics</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_home.css">
 </head>
 <body>
 
