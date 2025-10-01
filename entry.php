@@ -20,7 +20,7 @@ $allergens = [
 <head>
   <meta charset="UTF-8">
   <title>Foodmood: Add Meal</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_home.css">
 </head>
 <body>
 <div class="container">

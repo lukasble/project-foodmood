@@ -19,7 +19,6 @@ CREATE TABLE meal_logs (
   eaten_at DATETIME NOT NULL,
 
   -- Experience: 0 = good, 1 = bad (default good)
-  -- Should this be boolean data type instead? 
   
   experience BOOLEAN NOT NULL DEFAULT 0,
 
@@ -58,4 +57,9 @@ CREATE TABLE research_articles (
   url VARCHAR(500) NOT NULL,
   summary TEXT NULL,               -- Summary text
   category VARCHAR(100) NOT NULL   -- add which categories are included in the article
+<<<<<<< HEAD
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+=======
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+>>>>>>> 6fe348769278408af85c4fd338efbead8c254ecf

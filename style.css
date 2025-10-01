@@ -15,7 +15,7 @@ body {
 
 .btn {
     display: block;
-    background-color: #0066cc;
+    background-color: #ff6600;
     color: white;
     text-decoration: none; 
     margin-top: 10px;
@@ -28,7 +28,7 @@ body {
 }
 
 .btn:hover {
-    background-color: #004999;
+    background-color: #ff9f5f;
 }
 
 /* entry.php begin */
@@ -94,3 +94,5 @@ body {
 }
 
 /* entry.php end */
+
+
