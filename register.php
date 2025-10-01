@@ -2,18 +2,18 @@
 include 'db.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])); {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Hash password 
+    // Hashed password 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Generation of verification token
     // DELETE?? $token = bin2hex(random_bytes(16));
 
-    $stmt = $link->prepare("INSERT INTO users (email, password) VALUES (?, ?)";
-    $stmt->bind_param("ss", $email, $password);
+    $stmt = $link->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $hashedpassword);
 
     if (stmt->execute()) {
         $success = "Registering successful! You can now log in.";
