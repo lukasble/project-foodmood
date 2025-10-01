@@ -19,7 +19,6 @@ CREATE TABLE meal_logs (
   eaten_at DATETIME NOT NULL,
 
   -- Experience: 0 = good, 1 = bad (default good)
-  -- Should this be boolean data type instead? 
   
   experience BOOLEAN NOT NULL DEFAULT 0,
 
