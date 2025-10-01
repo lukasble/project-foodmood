@@ -19,23 +19,22 @@ CREATE TABLE meal_logs (
   eaten_at DATETIME NOT NULL,
 
   -- Experience: 0 = good, 1 = bad (default good)
-  -- Should this be boolean data type instead? 
   
-  experience TINYINT(1) NOT NULL DEFAULT 0,
+  experience BOOLEAN NOT NULL DEFAULT 0,
 
-  dairy TINYINT(1) NOT NULL DEFAULT 0,
-  gluten TINYINT(1) NOT NULL DEFAULT 0,
-  legumes TINYINT(1) NOT NULL DEFAULT 0,
-  cruciferous_vegetables TINYINT(1) NOT NULL DEFAULT 0,
-  alliums TINYINT(1) NOT NULL DEFAULT 0,
-  fruits TINYINT(1) NOT NULL DEFAULT 0,
-  sugar_alcohols_artificial_sweeteners TINYINT(1) NOT NULL DEFAULT 0,
-  high_fat_fried TINYINT(1) NOT NULL DEFAULT 0,
-  spicy TINYINT(1) NOT NULL DEFAULT 0,
-  acidic TINYINT(1) NOT NULL DEFAULT 0,
-  caffeine TINYINT(1) NOT NULL DEFAULT 0,
-  alcohol TINYINT(1) NOT NULL DEFAULT 0,
-  processed_food TINYINT(1) NOT NULL DEFAULT 0,
+  dairy BOOLEAN NOT NULL DEFAULT 0,
+  gluten BOOLEAN NOT NULL DEFAULT 0,
+  legumes BOOLEAN NOT NULL DEFAULT 0,
+  cruciferous_vegetables BOOLEAN NOT NULL DEFAULT 0,
+  alliums BOOLEAN NOT NULL DEFAULT 0,
+  fruits BOOLEAN NOT NULL DEFAULT 0,
+  sugar_alcohols_artificial_sweeteners BOOLEAN NOT NULL DEFAULT 0,
+  high_fat_fried BOOLEAN NOT NULL DEFAULT 0,
+  spicy BOOLEAN NOT NULL DEFAULT 0,
+  acidic BOOLEAN NOT NULL DEFAULT 0,
+  caffeine BOOLEAN NOT NULL DEFAULT 0,
+  alcohol BOOLEAN NOT NULL DEFAULT 0,
+  processed_food BOOLEAN NOT NULL DEFAULT 0,
 
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -57,5 +56,6 @@ CREATE TABLE research_articles (
   title VARCHAR(255) NOT NULL,
   url VARCHAR(500) NOT NULL,
   summary TEXT NULL,               -- Summary text
-  category VARCHAR(100) NOT NULL,  -- add which categories are included in the article
+  category VARCHAR(100) NOT NULL   -- add which categories are included in the article
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
