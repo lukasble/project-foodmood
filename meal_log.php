@@ -1,6 +1,37 @@
 
 <?php
 include 'db.php';
+
+// Updating an experience
+
+if (isset($_POST['update_experience'])) {
+    $id = (int)$_POST['id'];
+    $new_experience = (int)$_POST['experience'];
+
+    $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ?");
+    $stmt->bind_param("ii", $new_experience, $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+//Limit for how many entries to show 
+
+$limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+
+if ($limit == "all") {
+    $sql = "SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            ORDER BY eaten_at DESC";
+} else {
+    $limit = (int)$limit;
+    $sql = "SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            ORDER BY eaten_at DESC
+            LIMIT $limit";
+}
+
+$result = $link->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +42,8 @@ include 'db.php';
     <link rel="stylesheet" href="style_home.css">
 </head>
 <body>
+
+<!-- Move to .css later -->
 
 <style>
     .good-exp {
@@ -23,16 +56,22 @@ include 'db.php';
 }
 </style>
 
+<!-- -->
+
 <div class="meal-log-container">
     <h1>My Meal Log</h1>
 
-    <?php
-  
-    $sql = "SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            ORDER BY eaten_at DESC";
+<form method="get">
+        <label for="limit">Show entries:</label>
+        <select name="limit" id="limit" onchange="this.form.submit()">
+            <option value="10" <?php if ($limit == 10) echo 'selected'; ?>>10</option>
+            <option value="20" <?php if ($limit == 20) echo 'selected'; ?>>20</option>
+            <option value="50" <?php if ($limit == 50) echo 'selected'; ?>>50</option>
+            <option value="all" <?php if ($limit == "all") echo 'selected'; ?>>All</option>
+        </select>
+    </form>
 
-    $result = $link->query($sql);
+    <?php
 
     echo '<table class="meal-log-table">';
     echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
@@ -53,7 +92,17 @@ include 'db.php';
         echo "<tr>
                 <td>" . $row["meal_name"] . "</td>
                 <td>" . $row["eaten_at"] . "</td>
-                <td class='$experienceClass'>" . $experienceText . "</td>
+                <td> 
+                    <span class='$experienceClass'>$experienceText</span>
+                    <form method='post' style='margin:0;'>
+                        <input type='hidden' name='id' value='" . $row["id"] . "'>
+                        <select name='experience' onchange='this.form.submit()'>
+                            <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
+                            <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
+                        </select>
+                        <input type='hidden' name='update_experience' value='1'>
+                    </form>
+                </td>
               </tr>";
         }
 
@@ -72,12 +121,3 @@ include 'db.php';
 </body>
 </html>
 
-
-//Show ## entries button
-
-//Koppla artiklar till mest visade, knapp för att visa meals som oftast ger positiva eller negativa reaktioner
-//Kunna ändra experience på en måltid
-//Visa i rätt ordning
-
-//Avklarade
-//Fixa bad or good experience 
