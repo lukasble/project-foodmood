@@ -12,6 +12,17 @@ include 'db.php';
 </head>
 <body>
 
+<style>
+    .good-exp {
+    color: green;
+    font-weight: bold;
+}
+.bad-exp {
+    color: red;
+    font-weight: bold;
+}
+</style>
+
 <div class="meal-log-container">
     <h1>My Meal Log</h1>
 
@@ -26,11 +37,21 @@ include 'db.php';
     echo '<tbody>';
 
     while($row = $result->fetch_assoc()) { 
+
+        $experienceText = "";
+
+        if ($row["experience"] == 0) {
+            $experienceText = "Good";
+            $experienceClass = "good-exp";
+        } else {
+            $experienceText = "Bad";
+            $experienceClass = "bad-exp";
+        }
                                           
         echo "<tr>
                 <td>" . $row["meal_name"] . "</td>
                 <td>" . $row["eaten_at"] . "</td>
-                <td>" . $row["experience"] . "</td>
+                <td class='$experienceClass'>" . $experienceText . "</td>
               </tr>";
         }
 
