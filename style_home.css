@@ -2,9 +2,15 @@
 /* ----- Body ----- */
 /* -----------------*/
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-    margin: 0;
-    padding: 0;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
     color: #000;
     background: url("FoodMood_logo.png") no-repeat center center fixed;
@@ -16,13 +22,14 @@ body {
 /* ------------------- */
 
 .container {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100vh; */
     background: rgba(255, 255, 255, 0.85); 
     border-radius: 16px;
+    width: 100%;
     max-width: 400px;
     margin: auto;
     padding: 30px;
@@ -37,6 +44,7 @@ body {
     display: inline-block;
     width: 100%;
     padding: 14px 0;
+    margin: 10px 0;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
