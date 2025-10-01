@@ -1,8 +1,36 @@
 <?php
 // index.php - login page
-session(start);
+session_start();
 include: 'db.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])); {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $stmt = $link->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+
+        if (password_verify($password, $row['password'])); {
+            // Save user session
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['email'] = $email;
+            header("Location: home.php";
+            exit();
+        } else {
+            $error = "Invalid password.";
+        }
+    } else {
+        $error = "No account found with that email.";
+    }
+
+    $stmt->close();
+}
+$link->close();
 ?>
 
 <!DOCTYPE html>
@@ -17,16 +45,22 @@ include: 'db.php';
 
 <body>
     <div class="login-container">
+
+        <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
+        
         <h2>/Login</h2>
+        
+        <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
+
         <form action="index.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <buttom type="submit" name="login">/Login</buttom>
+            <button type="submit" name="login">/Login</button>
         </form>
 
     // Create account button
         <p>Don't have an account?</p>
-        <a href="register.php"><button type="button" class="create-account-btn">/Create account</button>button></a>
+        <a href="register.php"><button type="button" class="create-account-btn">Create account</button></a>
     </div>  
 </body>
 </html>
