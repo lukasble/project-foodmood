@@ -40,11 +40,11 @@ $link->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodMood - Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_home.css">
 </head>
 
 <body>
-    <div class="login-container">
+    <div class="container">
 
         <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
         
@@ -60,7 +60,7 @@ $link->close();
 
     // Create account button
         <p>Don't have an account?</p>
-        <a href="register.php"><button type="button" class="create-account-btn">Create account</button></a>
+        <a href="register.php"><button type="button" class="btn">Create account</button></a>
     </div>  
 </body>
 </html>
