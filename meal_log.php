@@ -45,16 +45,7 @@ $result = $link->query($sql);
 
 <!-- Move to .css later -->
 
-<style>
-    .good-exp {
-    color: green;
-    font-weight: bold;
-}
-.bad-exp {
-    color: red;
-    font-weight: bold;
-}
-</style>
+
 
 <!-- -->
 
@@ -92,18 +83,17 @@ $result = $link->query($sql);
         echo "<tr>
                 <td>" . $row["meal_name"] . "</td>
                 <td>" . $row["eaten_at"] . "</td>
-                <td> 
-                    <span class='$experienceClass'>$experienceText</span>
+                <td>
                     <form method='post' style='margin:0;'>
-                        <input type='hidden' name='id' value='" . $row["id"] . "'>
-                        <select name='experience' onchange='this.form.submit()'>
-                            <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
-                            <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
-                        </select>
-                        <input type='hidden' name='update_experience' value='1'>
-                    </form>
+                    <input type='hidden' name='id' value='" . $row["id"] . "'>
+                    <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
+                        <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
+                        <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
+                    </select>
+                    <input type='hidden' name='update_experience' value='1'>
+                </form>
                 </td>
-              </tr>";
+            </tr>";
         }
 
     echo '</tbody></table>';
