@@ -44,7 +44,7 @@ $link->close();
 </head>
 
 <body>
-    <div class="login-container">
+    <div class="container">
 
         <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
         
