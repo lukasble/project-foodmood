@@ -28,7 +28,9 @@ include 'db.php';
 
     <?php
   
-    $sql = "SELECT meal_name, eaten_at, experience FROM meal_logs";
+    $sql = "SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            ORDER BY eaten_at DESC";
 
     $result = $link->query($sql);
 
@@ -72,8 +74,10 @@ include 'db.php';
 
 
 //Show ## entries button
-//FIxa bad or good experience
+
 //Koppla artiklar till mest visade, knapp för att visa meals som oftast ger positiva eller negativa reaktioner
 //Kunna ändra experience på en måltid
 //Visa i rätt ordning
 
+//Avklarade
+//Fixa bad or good experience 
