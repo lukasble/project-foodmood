@@ -1,6 +1,16 @@
 <?php
 session_start();
 
+// ----------------------------------------- //
+// Set $_SESSION['user_id'] =1 for debugging //
+// ----------------------------------------- //
+if (!isset($_SESSION['user_id'])) {
+    if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+        $_SESSION['user_id'] = 1;
+    }
+}
+// ----------------------------------------- //
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
