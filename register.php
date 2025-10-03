@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     // DELETE?? $token = bin2hex(random_bytes(16));
 
     $stmt = $link->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashedpassword);
+    $stmt->bind_param("ss", $email, $hashedPassword);
 
     if (stmt->execute()) {
         $success = "Registering successful! You can now log in.";
@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <div class="login-container">
       <h2>/Create account</h2>
       <?php
-        if (!empty($error)) echo "<p class='error'>$error</p";
-        if (!empty($success)) echo "<p class=success'>$success</p";
+        if (!empty($error)) echo "<p class='error'>$error</p>";
+        if (!empty($success)) echo "<p class='success'>$success</p>";
       ?>
     
   
