@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
     $stmt->bind_param("ss", $email, $hashedPassword);
 
-    if (stmt->execute()) {
+    if ($stmt->execute()) {
         $success = "Registration successful! You can now log in.";
     } else {
         $error = "Error: " . $stmt->error;
