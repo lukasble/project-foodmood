@@ -55,7 +55,7 @@ $link->close();
         <form action="index.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="login">/Login</button>
+            <button type="submit" name="login">Login<button>
         </form>
 
     // Create account button
