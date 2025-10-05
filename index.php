@@ -48,7 +48,7 @@ $link->close();
 
         <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo" />
         
-        <h2>/Login</h2>
+        <h2>Login</h2>
         
         <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
 
