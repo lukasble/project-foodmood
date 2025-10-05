@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
       <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
         
-      <h2>/Create account</h2>
+      <h2>Create account</h2>
         
       <?php
         if (!empty($error)) echo "<p class='error'>$error</p>";
