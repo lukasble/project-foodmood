@@ -38,7 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </head>
 
 <body>
-    <div class="login-container">
+    <div class="container">
+
+      <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
+        
       <h2>/Create account</h2>
       <?php
         if (!empty($error)) echo "<p class='error'>$error</p>";
@@ -53,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
       </form>
 
       <p>Already have an account?</p>
-      <a href="index.php"><button type="button">Back to Login</button></a>
+      <a href="index.php"><button type="button" class="btn">Back to Login</button></a>
     </div>
 
 </body>
