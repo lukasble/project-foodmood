@@ -1,0 +1,96 @@
+    /* ---------- General page setup ---------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff5e6, #ffe1b3);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------- Login container ---------- */
+.login-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* ---------- Logo ---------- */
+.logo {
+    width: 100px;
+    margin-bottom: 15px;
+}
+
+/* ---------- Headings ---------- */
+h2 {
+    margin-bottom: 20px;
+    color: #ff7b00;
+    font-weight: 600;
+}
+
+/* ---------- Form inputs ---------- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+input:focus {
+    border-color: #ff7b00;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    padding: 12px;
+    background-color: #ff7b00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #e66f00;
+}
+
+/* ---------- Create account button ---------- */
+a button {
+    background-color: #fff;
+    border: 2px solid #ff7b00;
+    color: #ff7b00;
+    margin-top: 10px;
+}
+
+a button:hover {
+    background-color: #ff7b00;
+    color: #fff;
+}
+
+/* ---------- Text and error messages ---------- */
+p {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.error {
+    color: #e63946;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
