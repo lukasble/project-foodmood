@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
       <form action="register.php" method="post">
             <input type="email" name="email" placeholder="Enter your email" required>
             <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit" name="register">Create account</button>
+            <button type="submit" name="register">Create account<button>
       </form>
 
       <p>Already have an account?</p>
