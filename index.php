@@ -60,7 +60,7 @@ $link->close();
 
     // Create account button
         <p>Don't have an account?</p>
-        <a href="register.php"><button type="button" class="btn">Create account</button></a>
+        <a href="register.php"><button type="button" class="btn">Create account</a>
     </div>  
 </body>
 </html>
