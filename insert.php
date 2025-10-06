@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodMood: Home</title>
+  <link rel="stylesheet" href="style_home.css">
+</head>
+
 <?php
 // insert.php
 include 'db.php';
@@ -75,10 +83,18 @@ $stmt->bind_param(
 $result = $stmt->execute();
 
 if ($result) {
-  echo "New record created successfully!";
+?>
+  <body>
+    <div class="container">
+      <h1> Meal added to log! </h1>
+      <a href="home.php" class="btn">Back to home</a><br>
+    </div>
+  </body>
+<?php
 } else {
   echo "Error: " . $stmt->error;
 }
+
 
 $stmt->close();
 $link->close();
