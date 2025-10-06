@@ -1,37 +1,6 @@
 
 <?php
 include 'db.php';
-
-// Updating an experience
-
-if (isset($_POST['update_experience'])) {
-    $id = (int)$_POST['id'];
-    $new_experience = (int)$_POST['experience'];
-
-    $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ?");
-    $stmt->bind_param("ii", $new_experience, $id);
-    $stmt->execute();
-    $stmt->close();
-}
-
-//Limit for how many entries to show 
-
-$limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
-
-if ($limit == "all") {
-    $sql = "SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            ORDER BY eaten_at DESC";
-} else {
-    $limit = (int)$limit;
-    $sql = "SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            ORDER BY eaten_at DESC
-            LIMIT $limit";
-}
-
-$result = $link->query($sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +27,35 @@ $result = $link->query($sql);
     </form>
 
     <?php
+    // Updating an experience
 
+    if (isset($_POST['update_experience'])) {
+     $id = (int)$_POST['id'];
+     $new_experience = (int)$_POST['experience'];
+
+     $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ?");
+     $stmt->bind_param("ii", $new_experience, $id);
+     $stmt->execute();
+     $stmt->close();
+    }
+
+    //Limit for how many entries to show 
+
+    $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+
+    if ($limit == "all") {
+     $sql = "SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            ORDER BY eaten_at DESC";
+} else {
+    $limit = (int)$limit;
+    $sql = "SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            ORDER BY eaten_at DESC
+            LIMIT $limit";
+}
+
+$result = $link->query($sql);
     echo '<table class="meal-log-table">';
     echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
     echo '<tbody>';
