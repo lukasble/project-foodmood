@@ -10,46 +10,39 @@ if (!isset($_SESSION['user_id'])) {
   exit;
 }
 $uid  = (int)$_SESSION['user_id'];
+$minN = 5;
 
-$minN = 5; // minimum meals per category to include
-
-include 'db.php';
+Include 'db.php'; // must set $link = new mysqli(...)
 
 if (!isset($link) || !$link) {
   http_response_code(500);
   echo '<p class="msg msg--error">DB connection not available.</p>';
-  exit;}
+  exit;
+}
 
-  // This is used later to replace underscores with spaces when displayed in html
+// Replaces underscores with spaces for displaying to the user. 
 function humanize($s){ return ucfirst(str_replace('_',' ',$s)); }
 
-/* The section below selects the categories and sums their respective total exposures and bad exposures etc Example for one category (flag):
-  category = 'dairy' 
-  total_exposures = 3 
-  bad_exposures = 2 
-  bad_pct = 66.7 
-  
-  This is calculated from a table (cat) which selects all meals as row for each
-  category containing the binary value and binary experience. */
+/*
+  Schema query:
+  - Count exposures per category for this user (via JOINs)
+  - Compute bad_exposures and bad_pct
+  - Filter by minimum exposures
+*/
+$sqlTop = "SELECT
+    categories.id AS category_id,
+    categories.name AS category,
+    COUNT(*) AS total_exposures,
+    SUM(meal_logs.experience = 1) AS bad_exposures,
+    ROUND(100 * SUM(meal_logs.experience = 1) / NULLIF(COUNT(*), 0), 1) AS bad_pct -- Prevent division by 0 and round to 1 decimal 
 
-$sqlTop = "SELECT category, SUM(flag) AS total_exposures, SUM(flag AND experience = 1) AS bad_exposures, ROUND(100 * SUM(flag AND experience = 1) / NULLIF(SUM(flag),0), 1) AS bad_pct
-  FROM (
-    SELECT 'dairy' AS category, dairy AS flag, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'gluten', gluten, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'legumes', legumes, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'cruciferous_vegetables', cruciferous_vegetables, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'alliums', alliums, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'fruits', fruits, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'sugar_alcohols_artificial_sweeteners', sugar_alcohols_artificial_sweeteners, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'high_fat_fried', high_fat_fried, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'spicy', spicy, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'acidic', acidic, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'caffeine', caffeine, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'alcohol', alcohol, experience FROM meal_logs WHERE user_id = ?
-    UNION ALL SELECT 'processed_food', processed_food, experience FROM meal_logs WHERE user_id = ?) AS cat
-  GROUP BY category
-  HAVING total_exposures >= ?
-  ORDER BY bad_pct DESC, bad_exposures DESC, total_exposures DESC
+  FROM meal_logs
+  JOIN meal_log_categories ON meal_log_categories.meal_log_id = meal_logs.id
+  JOIN categories ON categories.id = meal_log_categories.category_id               -- Merge tables 
+  WHERE meal_logs.user_id = ?                                                      -- Only include meals belonging to the user
+  GROUP BY categories.id, categories.name                                          -- Sums up the results for meals with the same category
+  HAVING COUNT(*) >= ?                                                             -- Only include categories over minN
+  ORDER BY bad_pct DESC, bad_exposures DESC, total_exposures DESC                  -- Rank Order
   LIMIT 3";
 
 $stmt = $link->prepare($sqlTop);
@@ -58,14 +51,7 @@ if (!$stmt) {
   echo '<p class="msg msg--error">Prepare failed: '.htmlspecialchars($link->error).'</p>';
   exit;
 }
-
-// 13 copies of $uid + 1 copy of $minN (14 ? )
-$paramsTop = array_merge(array_fill(0, 13, $uid), [$minN]);
-$typesTop  = str_repeat('i', 14); // integers
-
-// bind_param requires individual args, "..." expands the array:
-$stmt->bind_param($typesTop, ...$paramsTop);
-
+$stmt->bind_param('ii', $uid, $minN);
 if (!$stmt->execute()) {
   http_response_code(500);
   echo '<p class="msg msg--error">Execute failed: '.htmlspecialchars($stmt->error).'</p>';
@@ -79,21 +65,20 @@ while ($row = $res->fetch_assoc()) {
 }
 $stmt->close();
 
-// Fetch related articles for found categories (ordered to match ranking)
-$articlesByCat = [];
-if (!empty($top)) {
-  $cats = array_column($top, 'category'); // Category names
-  $n    = count($cats); // (3) placeholders
 
-  // Build placeholders for IN (...) and FIELD(...):
-  // We need the categories twice (once for IN, once for FIELD order)
-  $place = implode(',', array_fill(0, $n, '?'));
-  
-  $sqlArt = "SELECT category, title, url
-    FROM research_articles
-    WHERE category IN ($place)
-    ORDER BY FIELD(category, $place), id DESC
-    LIMIT 7";
+// Get related articles via category_id
+$articlesByCatId = [];
+if (!empty($top)) {
+  $catIds = array_column($top, 'category_id');
+  $n      = count($catIds);
+
+  // Build placeholders, for example 3 categories would be ['?', '?', '?']
+  $ph = implode(',', array_fill(0, $n, '?'));
+
+$sqlArt = " SELECT research_articles.category_id, research_articles.title, research_articles.url
+  FROM research_articles
+  WHERE research_articles.category_id IN ($ph)
+  ORDER BY FIELD(research_articles.category_id, $ph), research_articles.id DESC";
 
   $stmt2 = $link->prepare($sqlArt);
   if (!$stmt2) {
@@ -102,10 +87,12 @@ if (!empty($top)) {
     exit;
   }
 
-  $paramsArt = array_merge($cats, $cats);   // first set for IN, second for FIELD
-  $typesArt  = str_repeat('s', $n*2);       // all strings
+  // We need the IDs twice for IN and FIELD
+  $params = array_merge($catIds, $catIds);
+  $types  = str_repeat('i', $n * 2);
 
-  $stmt2->bind_param($typesArt, ...$paramsArt);
+  $stmt2->bind_param($types, ...$params);
+
   if (!$stmt2->execute()) {
     http_response_code(500);
     echo '<p class="msg msg--error">Execute (articles) failed: '.htmlspecialchars($stmt2->error).'</p>';
@@ -114,10 +101,10 @@ if (!empty($top)) {
 
   $res2 = $stmt2->get_result();
   while ($r = $res2->fetch_assoc()) {
-    $c = $r['category'];
-    if (!isset($articlesByCat[$c])) $articlesByCat[$c] = [];
-    if (count($articlesByCat[$c]) < 5) {
-      $articlesByCat[$c][] = [
+    $cid = (int)$r['category_id'];
+    if (!isset($articlesByCatId[$cid])) $articlesByCatId[$cid] = [];
+    if (count($articlesByCatId[$cid]) < 5) {                // Only keeps max 5 per category
+      $articlesByCatId[$cid][] = [
         'title' => $r['title'],
         'url'   => $r['url'],
       ];
@@ -142,55 +129,48 @@ if (!empty($top)) {
     </header>
 
     <?php if (empty($top)): ?>
-      <section class="empty-state">
-        <h2 class="empty-state__title">Too few insights yet</h2>
-        <p class="empty-state__text">
-          We only analyze a category after at least <strong><?= (int)$minN ?></strong> meals that include it.
+      <div class="empty">
+        <h2 class="empty__title">Too few insights yet</h2>
+        <p class="empty__text">
+          We analyze a category after at least <strong><?= (int)$minN ?></strong> meals that include it.
         </p>
-        <div class="button-row">
-          <a href="meal_log.php" class="btn btn--secondary">← Back to meal log</a>
-        </div>
-      </section>
-    <?php else: ?>
-      <ol class="analysis-list">
-        <?php foreach ($top as $i => $row):
-          $cat   = $row['category'];
-          $bad   = (int)$row['bad_exposures'];
-          $total = (int)$row['total_exposures'];
-          $pct   = (float)$row['bad_pct'];
-          $arts  = $articlesByCat[$cat] ?? [];
-        ?>
-          <li class="analysis-item">
-            <div class="analysis-item__header">
-              <span class="analysis-item__rank">#<?= $i+1 ?></span>
-              <h2 class="analysis-item__title"><?= htmlspecialchars(humanize($cat)) ?></h2>
-              <div class="analysis-item__metrics">
-                <span class="metric metric--percent"><?= $pct ?>%</span>
-                <span class="metric metric--counts">(<?= $bad ?>/<?= $total ?>)</span>
-              </div>
-            </div>
-            <div class="analysis-item__body">
-              <?php if ($arts): ?>
-                <h3 class="section-title">Related articles</h3>
-                <ul class="link-list">
-                  <?php foreach ($arts as $a): ?>
-                    <li class="link-list__item">
-                      <a class="link" href="<?= htmlspecialchars($a['url']) ?>" target="_blank" rel="noopener">
-                        <?= htmlspecialchars($a['title']) ?>
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php else: ?>
-                <p class="muted">No articles yet for this category.</p>
-              <?php endif; ?>
-            </div>
-          </li>
-        <?php endforeach; ?>
-      </ol>
-      <div class="button-row">
         <a href="/meal_log.php" class="btn btn--secondary">← Back to meal logs</a>
       </div>
+
+    <?php else: ?>
+      <div class="analysis">
+        <?php foreach ($top as $i => $row):
+          $catId = (int)$row['category_id'];
+          $arts  = $articlesByCatId[$catId] ?? [];
+        ?>
+          <div class="analysis-item">
+            <div class="analysis-head">
+              <span class="analysis-rank">#<?= $i + 1 ?></span>
+              <h2 class="analysis-title"><?= htmlspecialchars(humanize($row['category'])) ?></h2>
+              <div class="analysis-metrics">
+                <span class="metric metric--percent"><?= $row['bad_pct'] ?>%</span>
+                <span class="metric metric--counts">(<?= $row['bad_exposures'] ?>/<?= $row['total_exposures'] ?>)</span>
+              </div>
+            </div>
+
+            <?php if ($arts): ?>
+              <div class="analysis-links">
+                <?php foreach ($arts as $a): ?>
+                  <a class="analysis-link"
+                     href="<?= htmlspecialchars($a['url']) ?>"
+                     target="_blank" rel="noopener">
+                    <?= htmlspecialchars($a['title']) ?>
+                  </a>
+                <?php endforeach; ?>
+              </div>
+            <?php else: ?>
+              <div class="analysis-links analysis-links--empty">No articles yet for this category.</div>
+            <?php endif; ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <a href="/meal_log.php" class="btn btn--secondary">← Back to meal logs</a>
     <?php endif; ?>
   </main>
 </body>
