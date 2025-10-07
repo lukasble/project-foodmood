@@ -7,7 +7,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="login-container">
       <a href="entry.php" class="btn">Add entry</a><br>
       <!-- <a href="experience.php" class="btn">Add experience</a><br> --->
       <a href="meal_log.php" class="btn">Show meal log</a><br>
