@@ -1,20 +1,32 @@
 <?php
-$allergens = [
-  'dairy' => ['label' => 'Dairy', 'desc' => 'Milk, cheese, yogurt, butter, etc.'],
-  'gluten' => ['label' => 'Gluten', 'desc' => 'Wheat, barley, rye, and products made from them.'],
-  'legumes' => ['label' => 'Legumes', 'desc' => 'Beans, lentils, peas, peanuts.'],
-  'cruciferous_vegetables' => ['label' => 'Cruciferous Vegetables', 'desc' => 'Broccoli, cauliflower, cabbage, Brussels sprouts.'],
-  'alliums' => ['label' => 'Alliums', 'desc' => 'Onion, garlic, leeks, shallots.'],
-  'fruits' => ['label' => 'Fruits', 'desc' => 'Various fruits; specify particular ones if needed.'],
-  'sugar_alcohols_artificial_sweeteners' => ['label' => 'Sugar Alcohols & Artificial Sweeteners', 'desc' => 'e.g., xylitol, sorbitol, aspartame.'],
-  'high_fat_fried' => ['label' => 'High-Fat & Fried Foods', 'desc' => 'Fried and very fatty foods.'],
-  'spicy' => ['label' => 'Spicy Foods', 'desc' => 'Heavily spiced foods (e.g., chili).'],
-  'acidic' => ['label' => 'Acidic Foods', 'desc' => 'Citrus, tomato, vinegar, etc.'],
-  'caffeine' => ['label' => 'Caffeine', 'desc' => 'Coffee, tea, energy drinks, chocolate.'],
-  'alcohol' => ['label' => 'Alcohol', 'desc' => 'All alcoholic beverages.'],
-  'processed_food' => ['label' => 'Processed Foods', 'desc' => 'Cured meats and ready-made products with additives.'],
-];
+session_start();
+
+include 'db.php';
+
+$sql = "SELECT id, name, COALESCE(description,'') 
+        FROM categories
+        ORDER BY name";
+$result = $link->query($sql);
+
+$allergens = [];
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $id   = (int)$row['id'];
+        $name = $row['name']; 
+
+        $label = ucwords(str_replace('_', ' ', $name));
+
+        $allergens[$id] = [
+            'label' => $label,
+            'desc'  => $row['description']
+        ];
+    }
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +37,8 @@ $allergens = [
 <body>
 <div class="container">
 
-  <h1>Add Meal</h1>
+  <?php echo '<h1>Add Meal for user: ' . $_SESSION['user_id'] . '</h1>'; ?> <!-- Debugging user_id -->
+
 
   <form action="insert.php" method="POST" autocomplete="off">
     <label for="name">Meal Name:</label>
@@ -42,9 +55,9 @@ $allergens = [
 
     <fieldset class="allergen-fieldset">
       <legend>Triggers</legend>
-      <?php foreach ($allergens as $key => $data):
-        $id = "allergen_$key";
-        $tipId = "tip_$key";
+      <?php foreach ($allergens as $catId => $data):
+        $idAttr = "allergen_$catId";
+        $tipId = "tip_$catId";
         $label = htmlspecialchars($data['label'], ENT_QUOTES, 'UTF-8');
         $desc  = htmlspecialchars($data['desc'], ENT_QUOTES, 'UTF-8');
       ?>
@@ -52,9 +65,9 @@ $allergens = [
           <input type="hidden" name="<?= htmlspecialchars($key, ENT_QUOTES, 'UTF-8') ?>" value="0">
           <input
             type="checkbox"
-            id="<?= $id ?>"
-            name="<?= htmlspecialchars($key, ENT_QUOTES, 'UTF-8') ?>"
-            value="1"
+            id="<?= $idAttr ?>"
+            name="allergens[]"
+            value="<?= (int)$catID ?>
             aria-describedby="<?= $tipId ?>"
             title="<?= $desc ?>"
           />
