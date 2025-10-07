@@ -60,7 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     </div>
     
     <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
     if (isset($_SESSION['user_id'])) {
         echo 'a href="logout.php" class="logout-btn">Log out</a';
     }
