@@ -38,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </head>
 
 <body>
+    <a href="logout.php" class="logout-btn">Log out</a
+    
     <div class="register-container">
 
       <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
