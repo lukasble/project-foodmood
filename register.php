@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <link rel="stylesheet" href="register_style.css">
 </head>
 
-<body>
+<body class="register-page">
     <div class="register-container">
 
       <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
