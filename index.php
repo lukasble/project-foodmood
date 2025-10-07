@@ -60,8 +60,6 @@ $link->close();
 
         <p>Don't have an account?</p>
         <a href="register.php"><button type="button">Create account</button></a>
-
-        <p class="italic-text">Already have an account? <a href="login.php">Log in</a></p>
     </div>  
 </body>
 </html>
