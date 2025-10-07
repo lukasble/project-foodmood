@@ -1,7 +1,13 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FoodMood: Home</title>
   <link rel="stylesheet" href="index_style.css">
 </head>
@@ -10,9 +16,10 @@
   <div class="login-container">
       <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo" />
 
-      <a href="entry.php" class="btn">Add entry</a><br>
-      <!-- <a href="experience.php" class="btn">Add experience</a><br> --->
-      <a href="meal_log.php" class="btn">Show meal log</a><br>
+      <h2>Welcome!</h2>
+
+      <a href="entry.php"><button type="button">Add entry</button></a>
+      <a href="meal_log.php"><button type="button">Show meal log</button></a>
   </div>
 
   <?php
@@ -20,7 +27,7 @@
         session_start();
     }
     if (isset($_SESSION['user_id'])) {
-        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+        echo '<a href="logout.php"><button type="button" class="logout-btn">Log out</button></a>';
     }
     ?>
   
