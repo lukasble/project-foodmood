@@ -1,4 +1,5 @@
 <?php
+session_start();
 $allergens = [
   'dairy' => ['label' => 'Dairy', 'desc' => 'Milk, cheese, yogurt, butter, etc.'],
   'gluten' => ['label' => 'Gluten', 'desc' => 'Wheat, barley, rye, and products made from them.'],
