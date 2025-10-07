@@ -23,6 +23,7 @@ $allergens = [
   <link rel="stylesheet" href="style_home.css">
 </head>
 <body>
+
 <div class="container">
 
   <h1>Add Meal</h1>
@@ -82,5 +83,14 @@ $allergens = [
   }
 })();
 </script>
+
+<?php
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+    }
+  ?>
 </body>
 </html>
