@@ -142,7 +142,7 @@ if (!empty($top)) {
   <meta charset="utf-8">
   <title>Basic Frequency Analysis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_home.css">
 </head>
 <body class="page page--analysis">
   <main class="container container--narrow">
