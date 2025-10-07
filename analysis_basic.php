@@ -1,6 +1,16 @@
 <?php
 session_start();
 
+// ----------------------------------------- //
+// Set $_SESSION['user_id'] =1 for debugging //
+// ----------------------------------------- //
+if (!isset($_SESSION['user_id'])) {
+    if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+        $_SESSION['user_id'] = 1;
+    }
+}
+// ----------------------------------------- //
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -119,7 +129,7 @@ $sqlArt = " SELECT research_articles.category_id, research_articles.title, resea
   <meta charset="utf-8">
   <title>Basic Frequency Analysis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_home.css">
 </head>
 <body class="page page--analysis">
   <main class="container container--narrow">
@@ -173,5 +183,14 @@ $sqlArt = " SELECT research_articles.category_id, research_articles.title, resea
       <a href="/meal_log.php" class="btn btn--secondary">← Back to meal logs</a>
     <?php endif; ?>
   </main>
+
+<?php
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+    }
+?>
 </body>
 </html>

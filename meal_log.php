@@ -1,36 +1,19 @@
 
 <?php
+session_start();
 include 'db.php';
 
-// Updating an experience
-
-if (isset($_POST['update_experience'])) {
-    $id = (int)$_POST['id'];
-    $new_experience = (int)$_POST['experience'];
-
-    $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ?");
-    $stmt->bind_param("ii", $new_experience, $id);
-    $stmt->execute();
-    $stmt->close();
+if(!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo '<p class="msg msg--error">You must be logged in to view this page.</p>';
+    exit;   
 }
+
+$uid = (int)$_SESSION['user_id'];
 
 //Limit for how many entries to show 
 
-$limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
-
-if ($limit == "all") {
-    $sql = "SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            ORDER BY eaten_at DESC";
-} else {
-    $limit = (int)$limit;
-    $sql = "SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            ORDER BY eaten_at DESC
-            LIMIT $limit";
-}
-
-$result = $link->query($sql);
+    $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
 
 ?>
 
@@ -58,7 +41,41 @@ $result = $link->query($sql);
     </form>
 
     <?php
+    // Updating an experience
 
+    if (isset($_POST['update_experience'])) {
+     $id = (int)$_POST['id'];
+     $new_experience = (int)$_POST['experience'];
+
+     $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ? AND user_id = ?");
+     $stmt->bind_param("iii", $new_experience, $id, $uid);
+     $stmt->execute();
+     $stmt->close();
+    }
+
+    if ($limit == "all") {
+        $stmt = $link->prepare("
+            SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            WHERE user_id = ?
+            ORDER BY eaten_at DESC;
+        ");
+        $stmt->bind_param("i", $uid);
+} else {
+    $limit = (int)$limit;
+    $stmt = $link->prepare("
+            SELECT id, meal_name, eaten_at, experience 
+            FROM meal_logs
+            WHERE user_id = ?
+            ORDER BY eaten_at DESC
+            LIMIT ?;
+        ");
+        $stmt->bind_param("ii", $uid, $limit);
+}
+
+$stmt->execute(); 
+
+$result = $stmt->get_result();
     echo '<table class="meal-log-table">';
     echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
     echo '<tbody>';
@@ -93,6 +110,7 @@ $result = $link->query($sql);
 
     echo '</tbody></table>';
 
+    $stmt->close();
     $link->close();
     
     ?>
@@ -102,6 +120,15 @@ $result = $link->query($sql);
 <a href="home.php" class="btn">Back to home</a>
 
 <a href="analysis_basic.php" class="btn">Make Basic Frequency Analysis</a>
+
+<?php
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+    }
+?>
 
 </body>
 </html>

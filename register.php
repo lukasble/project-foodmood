@@ -12,11 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     // Generation of verification token
     // DELETE?? $token = bin2hex(random_bytes(16));
 
-    $stmt = $link->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashedpassword);
+    $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $hashedPassword);
 
-    if (stmt->execute()) {
-        $success = "Registering successful! You can now log in.";
+    if ($stmt->execute()) {
+        $success = "Registration successful! You can now log in.";
     } else {
         $error = "Error: " . $stmt->error;
     }
@@ -34,17 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodMood - Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="register_style.css">
 </head>
 
-<body>
-    <div class="login-container">
-      <h2>/Create account</h2>
+<body class="register-page">
+    <div class="register-container">
+
+      <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
+        
+      <h2>Create account</h2>
+        
       <?php
-        if (!empty($error)) echo "<p class='error'>$error</p";
-        if (!empty($success)) echo "<p class=success'>$success</p";
+        if (!empty($error)) echo "<p class='error'>$error</p>";
+        if (!empty($success)) echo "<p class='success'>$success</p>";
       ?>
-    
   
       <form action="register.php" method="post">
             <input type="email" name="email" placeholder="Enter your email" required>
@@ -54,7 +57,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
       <p>Already have an account?</p>
       <a href="index.php"><button type="button">Back to Login</button></a>
-    </div>
 
+    </div>
+    
+    <?php
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+    }
+    ?>
+    
 </body>
 </html>

@@ -117,3 +117,24 @@ body {
     transform: translateY(0);
 }
 
+/* ---------- Log out button ---------- */
+
+.logout-btn {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  color: #ff7a00;              /* same orange as your buttons */
+  border: 2px solid #ff7a00;
+  border-radius: 6px;
+  background: transparent;
+  padding: 8px 14px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ff7a00;
+  color: white;
+}
