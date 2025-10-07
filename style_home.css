@@ -121,21 +121,20 @@ body {
 
 .logout-btn {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 25px;
-  background-color: #ff7a00; /* same orange as your Create account button */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
+  color: #ff7a00;              /* same orange as your buttons */
+  border: 2px solid #ff7a00;
+  border-radius: 6px;
+  background: transparent;
+  padding: 8px 14px;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: bold;
   font-size: 14px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: 0.3s;
 }
 
 .logout-btn:hover {
-  background-color: #e86b00;
-  transform: translateY(-2px);
+  background-color: #ff7a00;
+  color: white;
 }
