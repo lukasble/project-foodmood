@@ -18,8 +18,8 @@ session_start();
 
       <h2>Welcome!</h2>
 
-      <a href="entry.php"><button type="button">Add entry</button></a>
-      <a href="meal_log.php"><button type="button">Show meal log</button></a>
+      <a href="entry.php"><button type="button">Add entry</button></a> <br>
+      <a href="meal_log.php"><button type="button">Show meal log</button></a> <br>
   </div>
 
   <?php
