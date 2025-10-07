@@ -100,3 +100,21 @@ p {
     font-size: 14px;
     margin-bottom: 10px;
 }
+
+/* ---------- Log out button ---------- */
+
+.logout-btn {
+  background-color: #ff5c5c;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ff3030;
+}
+
