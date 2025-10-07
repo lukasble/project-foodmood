@@ -57,8 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
       <p>Already have an account?</p>
       <a href="index.php"><button type="button">Back to Login</button></a>
-      
-      <p class="italic-text">Already have an account? <a href="index.php">Log in</a></p>
 
     </div>
     
