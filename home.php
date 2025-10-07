@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>FoodMood: Home</title>
-  <link rel="stylesheet" href="style_home.css">
+  <link rel="stylesheet" href="index_style.css">
 </head>
 
 <body>
