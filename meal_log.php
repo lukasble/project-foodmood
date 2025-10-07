@@ -121,6 +121,15 @@ $result = $stmt->get_result();
 
 <a href="analysis_basic.php" class="btn">Make Basic Frequency Analysis</a>
 
+<?php
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start();
+    }
+    if (isset($_SESSION['user_id'])) {
+        echo '<a href="logout.php" class="logout-btn">Log out</a>';
+    }
+?>
+
 </body>
 </html>
 
