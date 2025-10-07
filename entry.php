@@ -3,7 +3,7 @@ session_start();
 
 include 'db.php';
 
-$sql = "SELECT id, name, COALESCE(description,'') 
+$sql = "SELECT id, name, COALESCE(description,'') AS description 
         FROM categories
         ORDER BY name";
 $result = $link->query($sql);
@@ -67,7 +67,7 @@ if ($result && $result->num_rows > 0) {
             type="checkbox"
             id="<?= $idAttr ?>"
             name="allergens[]"
-            value="<?= (int)$catID ?>
+            value="<?= (int)$catID ?>"
             aria-describedby="<?= $tipId ?>"
             title="<?= $desc ?>"
           />
