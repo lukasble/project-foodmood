@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #ffa500;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,4 +95,104 @@ body {
 
 /* entry.php end */
 
+/*=================================================*/
+/* ===== Analysis page theme (scoped & safe) ===== */
+/*=================================================*/
 
+
+body.analysis-bg {
+  background: linear-gradient(135deg, #fff5e6, #ffe1b3);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.analysis-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+#analysis {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+  width: 100%;
+  max-width: 700px;
+  padding: 24px 26px;
+}
+
+#analysis h1,
+#analysis h2,
+#analysis h3 {
+  margin: 0 0 14px 0;
+  color: #ff7a00;
+  font-weight: 700;
+}
+
+#analysis textarea,
+#analysis input[type="text"],
+#analysis input[type="email"],
+#analysis input[type="password"],
+#analysis input[type="number"],
+#analysis select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  background: #fff;
+}
+
+#analysis textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+#analysis textarea:focus,
+#analysis input:focus,
+#analysis select:focus {
+  border-color: #ff7a00;
+  box-shadow: 0 0 0 3px rgba(255,122,0,.15);
+}
+
+#analysis .btn,
+#analysis button[type="submit"] {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  background-color: #ff7a00;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: transform .2s ease, background-color .25s ease;
+}
+
+#analysis .btn:hover,
+#analysis button[type="submit"]:hover {
+  background-color: #e86b00;
+  transform: translateY(-2px);
+}
+
+
+.analysis-head{
+  display:flex;
+  align-items:baseline;
+  gap:8px}
+
+.analysis-rank{
+  font-weight:800;
+  font-size:2rem;
+  line-height:1;
+  color:#ff7a00}
+
+a+.analysis{margin-top:16px}
+
+.analysis-links{margin-bottom:12px}
+
+.analysis-item+.analysis-item{margin-top:16px}

@@ -1,16 +1,6 @@
 <?php
 session_start();
 
-// ----------------------------------------- //
-// Set $_SESSION['user_id'] =1 for debugging //
-// ----------------------------------------- //
-if (!isset($_SESSION['user_id'])) {
-    if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
-        $_SESSION['user_id'] = 1;
-    }
-}
-// ----------------------------------------- //
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -129,13 +119,15 @@ $sqlArt = " SELECT research_articles.category_id, research_articles.title, resea
   <meta charset="utf-8">
   <title>Basic Frequency Analysis</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style_home.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="index_style.css">
 </head>
-<body class="page page--analysis">
+<body class="analysis-bg">
+  <div class="analysis-wrap"><div id="analysis">
   <main class="container container--narrow">
     <header class="page-header">
-      <h1 class="page-title">Top categories causing unpleasant experience</h1>
-      <p class="page-subtitle">Based on your logged meals</p>
+      <h1 class="page-title">Top categories causing unpleasant experiences</h1>
+      <p class="page-subtitle">Based on your logged meals:</p>
     </header>
 
     <?php if (empty($top)): ?>
@@ -183,14 +175,6 @@ $sqlArt = " SELECT research_articles.category_id, research_articles.title, resea
       <a href="/meal_log.php" class="btn btn--secondary">← Back to meal logs</a>
     <?php endif; ?>
   </main>
-
-<?php
-    if (session_status() === PHP_SESSION_NONE) { 
-        session_start();
-    }
-    if (isset($_SESSION['user_id'])) {
-        echo '<a href="logout.php" class="logout-btn">Log out</a>';
-    }
-?>
+  </div></div>
 </body>
 </html>
