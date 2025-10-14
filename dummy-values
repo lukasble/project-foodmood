@@ -125,3 +125,53 @@ VALUES
 -- 20. Avocado toast
 (20, 1),  -- gluten
 (20, 13); -- corn
+
+INSERT INTO research_articles (title, url, category_id)
+VALUES
+-- 1. gluten
+('Non-celiac gluten sensitivity', 'https://www.health.harvard.edu/digestive-health/non-celiac-gluten-sensitivity', 1),
+
+-- 2. lactose
+('Understanding the Controversy: Milk and Its Role in Histamine Intolerance', 'https://www.oxfordgastrodietitians.com/post/understanding-the-controversy-milk-and-its-role-in-histamine-intolerance', 2),
+('Definition & Facts for Lactose Intolerance', 'https://www.niddk.nih.gov/health-information/digestive-diseases/lactose-intolerance/definition-facts', 2),
+
+-- 3. nuts
+-- ('text', 'text', 3),
+
+-- 4. soy
+('Including legumes on a low FODMAP diet', 'https://www.monashfodmap.com/blog/including-legumes-on-low-fodmap-diet/', 4),
+('Legumes: Good or Bad?', 'https://www.healthline.com/nutrition/legumes-good-or-bad', 4),
+
+-- 5. eggs
+-- ('text', 'text', 'text', 5),
+
+-- 6. fish
+-- ('text', 'text', 'text', 6),
+
+-- 7. shellfish
+-- ('text', 'text', 'text', 7),
+
+-- 8. sesame
+-- ('text', 'text', 'text', 8),
+
+-- 9. mustard
+-- ('text', 'text', 'text', 9),
+
+-- 10. celery
+-- ('text', 'text', 'text', 10),
+
+-- 11. sulfites
+-- ('text', 'text', 'text', 11),
+
+-- 12. fructose
+-- ('text', 'text', 'text', 12),
+
+-- 13. corn
+-- ('text', 'text', 'text', 13),
+
+-- 14. caffeine
+-- ('text', 'text', 'text', 14),
+
+-- 15. chocolate
+-- ('text', 'text', 'text', 15);
+
