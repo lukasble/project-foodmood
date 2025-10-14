@@ -8,13 +8,21 @@ html, body {
 }
 
 body {
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #000;
-    background: url("FoodMood_logo.png") no-repeat center center fixed;
-    background-size: cover;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff5e6, #ffe1b3);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ff7b00;
+    font-weight: 600;
+    text-align: center;
 }
 
 /* ------------------- */
@@ -22,18 +30,12 @@ body {
 /* ------------------- */
 
 .container {
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; */
-    background: rgba(255, 255, 255, 0.85); 
+    background: #ffffff;
+    padding: 40px;
     border-radius: 16px;
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-    padding: 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 350px;
 }
 
 /* ------------ */
@@ -43,24 +45,64 @@ body {
 .btn {
     display: inline-block;
     width: 100%;
-    padding: 14px 0;
+    padding: 12px 0;
     margin: 10px 0;
     text-align: center;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
     color: #fff;
-    background-color: #ffa500;
+    background-color: #ff7b00;
     border: none;
     border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
 }
 
 
 .btn:hover {
-    background-color: #000;
-    color: #fff;
-    transform: translateY(-2px);
+    background-color: #e66f00;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.form-row label {
+  min-width: 100px;
+  text-align: left;         
+  font-weight: bold;
+}
+
+.form-row input,
+.form-row select {
+    flex: 1;
+    width: 100%; 
+    box-sizing: border-box; 
+    max-width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-row select {
+  display: block;
+  width: 100%;
+}
+
+
+.allergen-fieldset {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 15px;
+  max-width: 300px;
 }
 
 /* ----------------- */

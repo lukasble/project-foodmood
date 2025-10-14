@@ -28,6 +28,10 @@ body {
     margin: 0 auto 10px auto;
 }
 
+.logo--error {
+    transform: rotate(180deg);
+}
+
 /* ---------- Headings ---------- */
 h2 {
     margin-bottom: 20px;
