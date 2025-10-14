@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                    title="Must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number"
                    required>
 
-              <small class="password-hint">
+              <div class="password-hint">
                   Password must be at least 8 characters, include an uppercase letter, a lowercase letter, and a number.
-              </small>
+              </div>
           </div>
           
           <button type="submit" name="register">Create account</button>
