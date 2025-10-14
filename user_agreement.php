@@ -28,8 +28,8 @@ $LAST_UPDATED = '2025-10-14'
 
 <body>
 <div class="agreement-container">
-    <h1>User Agreement (v{$TERMS_VERSION})</h1>
-    <p><em>Last updated: {$LAST_UPDATED}</em></p>
+    <h1>User Agreement (v <?= htmlspecialchars($TERMS_VERSION ?? '', ENT_QUOTES, 'UTF-8') ?>)</h1>
+    <p><em>Last updated: <?= htmlspecialchars($LAST_UPDATED ?? '', ENT_QUOTES, 'UTF-8') ?></em></p>
     <h2>Instroduction</h2>
     <p>text</p>
     <h2>Sensetive data</h2>
