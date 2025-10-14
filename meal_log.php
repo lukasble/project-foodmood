@@ -128,29 +128,37 @@ $uid = (int)$_SESSION['user_id'];
 
     if ($limit == "all") {
         $stmt = $link->prepare("
-            SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            WHERE user_id = ?
-            ORDER BY eaten_at DESC;
+           SELECT m.id, m.meal_name, m.eaten_at, m.experience,
+                   GROUP_CONCAT(c.name SEPARATOR ', ') AS categories
+            FROM meal_logs m
+            LEFT JOIN meal_log_categories mlc ON m.id = mlc.meal_log_id
+            LEFT JOIN categories c ON mlc.category_id = c.id
+            WHERE m.user_id = ?
+            GROUP BY m.id
+            ORDER BY m.eaten_at DESC; 
         ");
         $stmt->bind_param("i", $uid);
 } else {
     $limit = (int)$limit;
     $stmt = $link->prepare("
-            SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            WHERE user_id = ?
-            ORDER BY eaten_at DESC
+            SELECT m.id, m.meal_name, m.eaten_at, m.experience,
+                   GROUP_CONCAT(c.name SEPARATOR ', ') AS categories
+            FROM meal_logs m
+            LEFT JOIN meal_log_categories mlc ON m.id = mlc.meal_log_id
+            LEFT JOIN categories c ON mlc.category_id = c.id
+            WHERE m.user_id = ?
+            GROUP BY m.id
+            ORDER BY m.eaten_at DESC
             LIMIT ?;
         ");
         $stmt->bind_param("ii", $uid, $limit);
 }
 
 $stmt->execute(); 
-
 $result = $stmt->get_result();
+
     echo '<table class="meal-log-table">';
-    echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
+    echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th><th>Categories</th></tr></thead>';
     echo '<tbody>';
 
     while($row = $result->fetch_assoc()) { 
@@ -178,6 +186,7 @@ $result = $stmt->get_result();
                     <input type='hidden' name='update_experience' value='1'>
                 </form>
                 </td>
+                <td>" . ($row["categories"] ? htmlspecialchars($row["categories"]) : '—') . "</td>
             </tr>";
         }
 
