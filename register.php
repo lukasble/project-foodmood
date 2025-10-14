@@ -38,7 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <title>FoodMood - Register</title>
     <link rel="stylesheet" href="register_style.css">
     <style>
-
+        .accept-terms {
+            display: flex;
+        }
     </style>
 </head>
 
@@ -59,10 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             <input type="password" name="password" placeholder="Enter your password" required>
 
 
+            <div class="aceept-terms">
             <input type="checkbox" id="accept_terms" name="accept_terms" value="1" required>
             <label for="accept_terms"> 
                 I accept <a href="user_agreement.php"> terms of service</a>
             </label>
+            </div>
 
             <button type="submit" name="register">Create account</button>
         </form>
