@@ -12,23 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     } else {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+        // Generation of verification token (optional)
+        // $token = bin2hex(random_bytes(16));
 
-    // Generation of verification token
-    // DELETE?? $token = bin2hex(random_bytes(16));
+        $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
+        $stmt->bind_param("ss", $email, $hashedPassword);
 
-    $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashedPassword);
-
-    if ($stmt->execute()) {
-        $success = "Registration successful! You can now log in.";
-    } else {
-        $error = "Error: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $link->close();
-
-}
+        if ($stmt->execute()) {
+            $success = "Registration successful! You can now log in.";
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+    } 
+} 
 ?>
 
 <!DOCTYPE html>
