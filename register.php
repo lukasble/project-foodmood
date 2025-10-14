@@ -5,6 +5,8 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $terms_accepted = gmdate('Y-m-d H:i:s');
+    $terms_version = '1.0';
 
     // Hashed password 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -12,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     // Generation of verification token
     // DELETE?? $token = bin2hex(random_bytes(16));
 
-    $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashedPassword);
+    $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted, $terms_version);
 
     if ($stmt->execute()) {
         $success = "Registration successful! You can now log in.";
