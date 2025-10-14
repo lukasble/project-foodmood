@@ -50,18 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
       ?>
   
       <form action="register.php" method="post">
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" 
+          <input type="email" name="email" placeholder="Enter your email" required>
+
+          <div class="password-field">
+              <input type="password" name="password" 
                    placeholder="Enter your password" 
                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}"
                    title="Must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number"
                    required>
 
-            <small class="password-hint">
-                Password must be at least 8 characters, include an uppercase letter, a lowercase letter, and a number.
-            </small>
+              <small class="password-hint">
+                  Password must be at least 8 characters, include an uppercase letter, a lowercase letter, and a number.
+              </small>
+          </div>
           
-            <button type="submit" name="register">Create account</button>
+          <button type="submit" name="register">Create account</button>
       </form>
 
       <p>Already have an account?</p>
