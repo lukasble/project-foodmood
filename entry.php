@@ -76,16 +76,15 @@ if ($result && $result->num_rows > 0) {
         $desc  = htmlspecialchars($data['desc'], ENT_QUOTES, 'UTF-8');
       ?>
         <div class="allergen">
-          <input type="hidden" name="<?= htmlspecialchars($key, ENT_QUOTES, 'UTF-8') ?>" value="0">
           <input
             type="checkbox"
             id="<?= $idAttr ?>"
             name="allergens[]"
-            value="<?= (int)$catID ?>"
+            value="<?= (int)$catId ?>"
             aria-describedby="<?= $tipId ?>"
             title="<?= $desc ?>"
           />
-          <label for="<?= $id ?>"><?= $label ?></label>
+          <label for="<?= $idAttr ?>"><?= $label ?></label>
           <div id="<?= $tipId ?>" class="tooltip" role="tooltip">
             <?= $desc ?>
           </div>
