@@ -34,7 +34,8 @@ CREATE TABLE meal_logs (
 
 CREATE TABLE categories (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50) NOT NULL UNIQUE,     -- dairy, gluten, spicy, etc.
+  name VARCHAR(50) NOT NULL UNIQUE,
+  description VARCHAR(255) NULL,
   is_active BOOLEAN NOT NULL DEFAULT 1)
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
