@@ -11,6 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 $uid  = (int)$_SESSION['user_id'];
 $minN = 5;
+$lookback_min = 60;
 
 Include 'db.php'; // must set $link = new mysqli(...)
 
@@ -28,7 +29,7 @@ function humanize($s){ return ucfirst(str_replace('_',' ',$s)); }
   - Count exposures per category for this user (via JOINs)
   - Compute bad_exposures and bad_pct
   - Filter by minimum exposures
-*/
+*//*
 $sqlTop = "SELECT
     categories.id AS category_id,
     categories.name AS category,
@@ -44,6 +45,60 @@ $sqlTop = "SELECT
   HAVING COUNT(*) >= ?                                                             -- Only include categories over minN
   ORDER BY bad_pct DESC, bad_exposures DESC, total_exposures DESC                  -- Rank Order
   LIMIT 3";
+*/
+
+$sqlTop = "SELECT
+/* 1) Final columns per category */
+categories.id AS category_id,
+  categories.name AS category,
+  total_exposures_by_category.total_exposures,
+  COALESCE(bad_window_exposures_by_category.bad_exposures, 0) AS bad_exposures,
+  ROUND(100 * COALESCE(bad_window_exposures_by_category.bad_exposures, 0)/ NULLIF(total_exposures_by_category.total_exposures, 0), 1
+  ) AS bad_pct
+
+FROM categories -- One output row per category
+
+/* 2) Overall exposures per category for this user */
+JOIN (
+  SELECT
+    meal_log_categories.category_id, COUNT(*) AS total_exposures
+  FROM meal_log_categories
+  JOIN meal_logs
+  ON meal_logs.id = meal_log_categories.meal_log_id
+  WHERE meal_logs.user_id = ?
+  GROUP BY meal_log_categories.category_id
+) AS total_exposures_by_category
+  ON total_exposures_by_category.category_id = categories.id
+
+/* 3) Exposures within lookback window before each bad meal (same user) */
+/* A meal can be counted at most once as the meal id prevents this */
+LEFT JOIN (
+  SELECT
+    meal_log_categories.category_id, COUNT(DISTINCT meals.id) AS bad_exposures
+  FROM meal_logs AS meals
+  JOIN meal_log_categories
+  ON meal_log_categories.meal_log_id = meals.id
+  WHERE meals.user_id = ?
+    AND EXISTS (SELECT 1
+      FROM meal_logs AS bad_meals
+      WHERE bad_meals.user_id = meals.user_id
+      AND bad_meals.experience = 1
+      AND meals.eaten_at BETWEEN DATE_SUB(bad_meals.eaten_at, INTERVAL ? MINUTE)
+      AND bad_meals.eaten_at
+    )
+  GROUP BY meal_log_categories.category_id
+) AS bad_window_exposures_by_category
+  ON bad_window_exposures_by_category.category_id = categories.id
+
+
+/* 4) Only keep categories with enough total exposures */
+WHERE total_exposures_by_category.total_exposures >= ?
+
+/* 5) Rank by %, then counts, show top 3 categories */
+ORDER BY bad_pct DESC, bad_exposures DESC, total_exposures_by_category.total_exposures DESC
+LIMIT 3
+";
+
 
 $stmt = $link->prepare($sqlTop);
 if (!$stmt) {
@@ -51,7 +106,7 @@ if (!$stmt) {
   echo '<p class="msg msg--error">Prepare failed: '.htmlspecialchars($link->error).'</p>';
   exit;
 }
-$stmt->bind_param('ii', $uid, $minN);
+$stmt->bind_param('iiii', $uid, $uid, $lookback_min ,$minN);
 if (!$stmt->execute()) {
   http_response_code(500);
   echo '<p class="msg msg--error">Execute failed: '.htmlspecialchars($stmt->error).'</p>';
