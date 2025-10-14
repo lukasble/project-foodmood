@@ -129,10 +129,15 @@ p {
 /* ---------- Password requirement message ---------- */
 
 .password-hint {
-  font-size: 12px;
-  color: #777;
-  margin-top: 4px;
   display: block;
+  font-size: 13px;
+  color: #777;
+  text-align: left;
+  margin: 6px 0 14px 0;
+  line-height: 1.4;
 }
 
+input[name="password"]:focus + .password-hint {
+  color: #555;
+}
 
