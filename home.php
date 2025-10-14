@@ -1,14 +1,5 @@
 <?php
-session_start();
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-if (!isset($_SESSION['user_id'])) {
-  http_response_code(401);
-  echo '<p class="msg msg--error">You must be logged in.</p>';
-  exit;
-}
+include 'login_control.php';
 ?>
 
 <!DOCTYPE html>
