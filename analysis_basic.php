@@ -1,19 +1,10 @@
 <?php
-session_start();
+include 'login_control.php';
+include 'db.php';
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-if (!isset($_SESSION['user_id'])) {
-  http_response_code(401);
-  echo '<p class="msg msg--error">You must be logged in.</p>';
-  exit;
-}
 $uid  = (int)$_SESSION['user_id'];
 $minN = 5;
 $lookback_min = 60;
-
-Include 'db.php'; // must set $link = new mysqli(...)
 
 if (!isset($link) || !$link) {
   http_response_code(500);

@@ -1,13 +1,7 @@
 
 <?php
-session_start();
+include 'login_control.php';
 include 'db.php';
-
-if(!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo '<p class="msg msg--error">You must be logged in to view this page.</p>';
-    exit;   
-}
 
 $uid = (int)$_SESSION['user_id'];
 
