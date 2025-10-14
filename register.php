@@ -6,8 +6,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Hashed password 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Check password strength
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)) {
+        $error = "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.";
+    } else {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
 
     // Generation of verification token
     // DELETE?? $token = bin2hex(random_bytes(16));
