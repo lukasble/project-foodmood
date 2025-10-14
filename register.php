@@ -37,28 +37,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodMood - Register</title>
     <link rel="stylesheet" href="register_style.css">
+    <style>
+
+    </style>
 </head>
 
 <body class="register-page">
     <div class="register-container">
 
-      <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
+        <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo">
         
-      <h2>Create account</h2>
+        <h2>Create account</h2>
         
-      <?php
-        if (!empty($error)) echo "<p class='error'>$error</p>";
-        if (!empty($success)) echo "<p class='success'>$success</p>";
-      ?>
+        <?php
+            if (!empty($error)) echo "<p class='error'>$error</p>";
+            if (!empty($success)) echo "<p class='success'>$success</p>";
+        ?>
   
-      <form action="register.php" method="post">
+        <form action="register.php" method="post">
             <input type="email" name="email" placeholder="Enter your email" required>
             <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit" name="register">Create account</button>
-      </form>
 
-      <p>Already have an account?</p>
-      <a href="index.php"><button type="button">Back to Login</button></a>
+
+            <input type="checkbox" id="accept_terms" name="accept_terms" value="1" required>
+            <label for="accept_terms"> 
+                I accept <a href="user_agreement.php"> terms of service</a>
+            </label>
+
+            <button type="submit" name="register">Create account</button>
+        </form>
+
+        <p>Already have an account?</p>
+        <a href="index.php"><button type="button">Back to Login</button></a>
 
     </div>
     
