@@ -1,5 +1,6 @@
 <?php
 session_start();
+$isLoggedIn = !empty($_SESSION['user_id']); 
 
 $TERMS_VERSION = '1.0';
 $LAST_UPDATED = '2025-10-14'
@@ -22,7 +23,12 @@ $LAST_UPDATED = '2025-10-14'
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         text-align: left;
         width: 800px;
-    }  
+    }
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
   </style>
 </head>
 
@@ -45,9 +51,13 @@ $LAST_UPDATED = '2025-10-14'
     <p>text</p>
     <h2>Changes</h2>
     <p>text</p>
-
-    <a href="home.php"><button type="button">Back to home</button></a>
-
+    <div class="center">
+      <?php if ($isLoggedIn): ?>
+        <a href="home.php"><button type="button">Back to home</button></a>
+      <?php else: ?>
+        <a href="register.php"><button type="button">Back to register</button></a>
+      <?php endif; ?>
+    </div>
 </div>
 </body>
 
