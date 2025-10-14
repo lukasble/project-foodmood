@@ -1,0 +1,18 @@
+INSERT INTO categories (name, description, is_active)
+VALUES
+('gluten', 'Protein found in wheat, barley, and rye. Can trigger reactions in celiac disease.', 1),
+('lactose', 'Sugar found in milk and dairy products. Can cause intolerance symptoms.', 1),
+('nuts', 'Includes peanuts, almonds, walnuts, and other tree nuts. Common allergen.', 1),
+('soy', 'Legume protein used in many processed foods. Common allergen.', 1),
+('eggs', 'Protein source from poultry eggs. Can trigger allergic reactions.', 1),
+('fish', 'Includes salmon, tuna, cod, etc. Can cause severe allergic reactions.', 1),
+('shellfish', 'Includes shrimp, crab, and lobster. Common cause of food allergy.', 1),
+('sesame', 'Seed used in breads and sauces. Increasingly recognized as allergen.', 1),
+('mustard', 'Spice and condiment allergen common in sauces and dressings.', 1),
+('celery', 'Vegetable allergen that can cause reactions even when cooked.', 1),
+('sulfites', 'Preservatives found in dried fruits, wine, and some sauces.', 1),
+('fructose', 'Sugar found in fruits and honey. Can cause digestive issues.', 1),
+('corn', 'Common cereal grain; may cause sensitivity in some individuals.', 1),
+('caffeine', 'Stimulant found in coffee, tea, and energy drinks; may cause adverse effects.', 1),
+('chocolate', 'Contains cocoa and milk derivatives; can trigger mild reactions.', 1);
+
