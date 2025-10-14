@@ -26,6 +26,79 @@ $uid = (int)$_SESSION['user_id'];
 </head>
 <body>
 
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff5e6, #ffe1b3);
+            min-height: 100vh;
+        }
+
+        .meal-log-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .meal-log-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .meal-log-table th {
+            background-color: #ff7b00;
+            color: white;
+            text-transform: uppercase;
+            padding: 12px;
+        }
+
+        .meal-log-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f5d7a2;
+        }
+
+        .meal-log-table tr:nth-child(even) {
+            background-color: #fff5e6;
+        }
+
+        .meal-log-table tr:hover {
+            background-color: #ffe6cc;
+        }
+
+        .good-exp {
+            color: green;
+            font-weight: 600;
+        }
+
+        .bad-exp {
+            color: red;
+            font-weight: 600;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px;
+            background-color: #ff7b00;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #e66f00;
+        }
+    </style>
+
 
 <div class="meal-log-container">
     <h1>My Meal Log</h1>
@@ -117,9 +190,9 @@ $result = $stmt->get_result();
 
 </div>
 
-<a href="home.php" class="btn">Back to home</a>
+<a href="home.php" class="button">Back to home</a>
 
-<a href="analysis_basic.php" class="btn">Make Basic Frequency Analysis</a>
+<a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
 
 <?php
     if (session_status() === PHP_SESSION_NONE) { 
