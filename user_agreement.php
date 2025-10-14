@@ -35,7 +35,10 @@ $LAST_UPDATED = '2025-10-14'
     <h2>Sensetive data</h2>
     <p>text</p>
     <h2>Your responsibilities</h2>
-    <p>text</p>
+    <ul>
+        <li>item 1</li>
+        <li>item 2</li>
+    </ul>
     <h2>Data usage</h2>
     <p>text</p>
     <h2>Disclaimer</h2>
