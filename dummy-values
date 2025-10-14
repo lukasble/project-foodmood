@@ -16,3 +16,112 @@ VALUES
 ('caffeine', 'Stimulant found in coffee, tea, and energy drinks; may cause adverse effects.', 1),
 ('chocolate', 'Contains cocoa and milk derivatives; can trigger mild reactions.', 1);
 
+
+
+INSERT INTO meal_logs (user_id, meal_name, eaten_at, experience, created_at)
+VALUES
+(1, 'Oatmeal with milk',            '2025-10-01 08:15:00', 0, NOW()),
+(1, 'Chicken salad with nuts',      '2025-10-01 12:10:00', 1, NOW()),
+(1, 'Apple and coffee',             '2025-10-01 15:30:00', 0, NOW()),
+(1, 'Pasta with cheese sauce',      '2025-10-02 19:00:00', 1, NOW()),
+(1, 'Tofu stir-fry (soy sauce)',    '2025-10-03 12:20:00', 0, NOW()),
+(1, 'Egg sandwich',                 '2025-10-04 09:00:00', 1, NOW()),
+(1, 'Salmon with rice',             '2025-10-05 18:45:00', 0, NOW()),
+(1, 'Shrimp tacos',                 '2025-10-06 13:10:00', 1, NOW()),
+(1, 'Vegan burger (soy-based)',     '2025-10-07 19:20:00', 0, NOW()),
+(1, 'Cheese pizza',                 '2025-10-08 20:15:00', 1, NOW()),
+(1, 'Fruit smoothie',               '2025-10-09 09:30:00', 0, NOW()),
+(1, 'Cereal with milk',             '2025-10-09 07:50:00', 1, NOW()),
+(1, 'Steak and mashed potatoes',    '2025-10-10 18:10:00', 0, NOW()),
+(1, 'Chocolate dessert',            '2025-10-11 21:00:00', 1, NOW()),
+(1, 'Vegetable soup',               '2025-10-12 12:40:00', 0, NOW()),
+(1, 'Coffee and croissant',         '2025-10-13 08:45:00', 1, NOW()),
+(1, 'Fish & chips',                 '2025-10-13 19:30:00', 0, NOW()),
+(1, 'Pasta bolognese',              '2025-10-14 12:30:00', 0, NOW()),
+(1, 'Shrimp risotto',               '2025-10-14 19:00:00', 1, NOW()),
+(1, 'Avocado toast',                '2025-10-15 09:00:00', 0, NOW());
+
+
+
+INSERT INTO meal_log_categories (meal_log_id, category_id)
+VALUES
+-- 1. Oatmeal with milk
+(1, 2),  -- lactose
+(1, 13), -- corn (used in cereals)
+
+-- 2. Chicken salad with nuts
+(2, 3),  -- nuts
+(2, 10), -- celery
+
+-- 3. Apple and coffee
+(3, 14), -- caffeine
+(3, 12), -- fructose
+
+-- 4. Pasta with cheese sauce
+(4, 1),  -- gluten
+(4, 2),  -- lactose
+
+-- 5. Tofu stir-fry (soy sauce)
+(5, 4),  -- soy
+(5, 1),  -- gluten
+
+-- 6. Egg sandwich
+(6, 5),  -- eggs
+(6, 1),  -- gluten
+
+-- 7. Salmon with rice
+(7, 6),  -- fish
+
+-- 8. Shrimp tacos
+(8, 7),  -- shellfish
+(8, 1),  -- gluten
+
+-- 9. Vegan burger (soy-based)
+(9, 4),  -- soy
+(9, 1),  -- gluten
+
+-- 10. Cheese pizza
+(10, 1), -- gluten
+(10, 2), -- lactose
+
+-- 11. Fruit smoothie
+(11, 12), -- fructose
+(11, 2),  -- lactose
+
+-- 12. Cereal with milk
+(12, 1), -- gluten
+(12, 2), -- lactose
+
+-- 13. Steak and mashed potatoes
+(13, 11), -- sulfites (sauce or wine)
+(13, 2),  -- lactose (butter)
+
+-- 14. Chocolate dessert
+(14, 15), -- chocolate
+(14, 2),  -- lactose
+
+-- 15. Vegetable soup
+(15, 10), -- celery
+(15, 9),  -- mustard
+
+-- 16. Coffee and croissant
+(16, 14), -- caffeine
+(16, 1),  -- gluten
+(16, 2),  -- lactose
+
+-- 17. Fish & chips
+(17, 6),  -- fish
+(17, 1),  -- gluten
+
+-- 18. Pasta bolognese
+(18, 1),  -- gluten
+(18, 2),  -- lactose
+(18, 9),  -- mustard
+
+-- 19. Shrimp risotto
+(19, 7),  -- shellfish
+(19, 2),  -- lactose
+
+-- 20. Avocado toast
+(20, 1),  -- gluten
+(20, 13); -- corn
