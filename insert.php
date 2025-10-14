@@ -1,15 +1,18 @@
 <?php
-// insert.php
-include 'db.php';
+session_start();
 
-/* if (!isset($_SESSION['user_id'])) {
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+if (!isset($_SESSION['user_id'])) {
   http_response_code(401);
   echo '<p class="msg msg--error">You must be logged in.</p>';
   exit;
-} */
+}
 
+Include 'db.php';
 
-$user_id = 1;
+$uid  = (int)$_SESSION['user_id'];
 $meal_name = isset($_POST['name']) && $_POST['name'] !== '' ? trim($_POST['name']) : null;
 
 
@@ -36,7 +39,7 @@ try {
   $stmtMeal = $link->prepare($sqlMeal);
   if (!$stmtMeal) { throw new Exception('Prepare meal_logs misslyckades: '.$link->error); }
 
-  $stmtMeal->bind_param("issi", $user_id, $meal_name, $eaten_at, $experience);
+  $stmtMeal->bind_param("issi", $uid, $meal_name, $eaten_at, $experience);
   if (!$stmtMeal->execute()) { throw new Exception('Execute meal_logs misslyckades: '.$stmtMeal->error); }
   $meal_log_id = $stmtMeal->insert_id;
   $stmtMeal->close();
@@ -63,13 +66,39 @@ try {
   }
 
   $link->commit();
-  echo "Sparat! (meal_log_id: $meal_log_id)";
+  $message = "Sparat!";
 } catch (Throwable $e) {
   $link->rollback();
   http_response_code(500);
-  echo "Fel vid sparande: ".$e->getMessage();
+  $message = "Fel vid sparande: ".$e->getMessage();
 } finally {
   $link->close();
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodMood: Home</title>
+  <link rel="stylesheet" href="index_style.css">
+</head>
+<body>
+  <div class="login-container">
+    <img 
+      src="FoodMood_logo.png" 
+      alt="FoodMood Logo" 
+      class="logo <?= $is_ok ? '' : 'logo--error' ?>" 
+    />
+
+    <h2 class="msg <?= $is_ok ? 'msg--ok' : 'msg--error' ?>">
+      <?= htmlspecialchars($message ?? '', ENT_QUOTES, 'UTF-8') ?>
+    </h2>
+    
+      <a href="meal_log.php"><button type="button">Show meal log</button></a> <br>
+      <a href="home.php"><button type="button">Home</button></a> <br>
+  </div>
+</body> 
