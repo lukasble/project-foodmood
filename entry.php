@@ -1,6 +1,15 @@
 <?php
 session_start();
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+if (!isset($_SESSION['user_id'])) {
+  http_response_code(401);
+  echo '<p class="msg msg--error">You must be logged in.</p>';
+  exit;
+}
+
 include 'db.php';
 
 $sql = "SELECT id, name, COALESCE(description,'') AS description 
@@ -37,21 +46,26 @@ if ($result && $result->num_rows > 0) {
 <body>
 <div class="container">
 
-  <?php echo '<h1>Add Meal for user: ' . $_SESSION['user_id'] . '</h1>'; ?> <!-- Debugging user_id -->
-
+  <h2>Please enter details of your meal:</h2>
 
   <form action="insert.php" method="POST" autocomplete="off">
+  <div class="form-row">
     <label for="name">Meal Name:</label>
-    <input type="text" id="name" name="name" maxlength="150"><br>
+    <input type="text" id="name" name="name" maxlength="150">
+  </div>
 
-    <label for="eaten_at">When did you eat it?</label>
-    <input type="datetime-local" id="eaten_at" name="eaten_at" required><br>
+  <div class="form-row">
+    <label for="eaten_at">Eaten at:</label>
+    <input type="datetime-local" id="eaten_at" name="eaten_at" required>
+  </div>
 
+  <div class="form-row">
     <label for="experience">Experience:</label>
     <select name="experience" id="experience" required>
       <option value="0">Good</option>
       <option value="1">Bad</option>
-    </select><br><br>
+    </select><br>
+  </div>
 
     <fieldset class="allergen-fieldset">
       <legend>Triggers</legend>
@@ -95,5 +109,14 @@ if ($result && $result->num_rows > 0) {
   }
 })();
 </script>
+
+<?php
+  if (session_status() === PHP_SESSION_NONE) { 
+      session_start();
+  }
+  if (isset($_SESSION['user_id'])) {
+      echo '<a href="logout.php"><button type="button" class="logout-btn">Log out</button></a>';
+  }
+?>
 </body>
 </html>
