@@ -6,25 +6,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Check password strength
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)) {
-        $error = "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.";
+    // Hashed password 
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Generation of verification token
+    // DELETE?? $token = bin2hex(random_bytes(16));
+
+    $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $hashedPassword);
+
+    if ($stmt->execute()) {
+        $success = "Registration successful! You can now log in.";
     } else {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $error = "Error: " . $stmt->error;
+    }
 
-        // Generation of verification token (optional)
-        // $token = bin2hex(random_bytes(16));
+    $stmt->close();
+    $link->close();
 
-        $stmt = $link->prepare("INSERT INTO users (email, password_hash) VALUES (?, ?)");
-        $stmt->bind_param("ss", $email, $hashedPassword);
-
-        if ($stmt->execute()) {
-            $success = "Registration successful! You can now log in.";
-        } else {
-            $error = "Error: " . $stmt->error;
-        }
-    } 
-} 
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,23 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
       ?>
   
       <form action="register.php" method="post">
-          <input type="email" name="email" placeholder="Enter your email" required>
-          
-          <div class="password-field">
-              <input type="password" name="password"
-                  placeholder="Enter your password"
-                  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}"
-                  title="Must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number"
-                  required>
-              
-          <div class="password-hint">
-              Password must be at least 8 characters, include an uppercase letter, a lowercase letter, and a number.
-          </div>
-    </div>
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <button type="submit" name="register">Create account</button>
+      </form>
 
-  <button type="submit" name="register">Create account</button>
-          
-</form>
       <p>Already have an account?</p>
       <a href="index.php"><button type="button">Back to Login</button></a>
 
