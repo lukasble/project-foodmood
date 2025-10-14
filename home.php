@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+if (!isset($_SESSION['user_id'])) {
+  http_response_code(401);
+  echo '<p class="msg msg--error">You must be logged in.</p>';
+  exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +29,10 @@ session_start();
 
       <a href="entry.php"><button type="button">Add entry</button></a> <br>
       <a href="meal_log.php"><button type="button">Show meal log</button></a> <br>
+
+      <hr class="rounded">
+
+      <a href="user_agreement.php"><button type="button">View user agreement</button></a> <br>     
   </div>
 
   <?php
