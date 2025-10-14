@@ -126,14 +126,20 @@ p {
   transform: translateY(-2px);
 }
 
-/* ---------- Password requirement message ---------- */
+/* ---------- Password field styling ---------- */
+
+.password-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 .password-hint {
-  display: block;
   font-size: 13px;
   color: #777;
+  margin-top: 6px;
+  margin-bottom: 14px;
   text-align: left;
-  margin: 6px 0 14px 0;
   line-height: 1.4;
 }
 
