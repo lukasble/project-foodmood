@@ -88,15 +88,11 @@ try {
 </head>
 <body>
   <div class="login-container">
-    <img 
-      src="FoodMood_logo.png" 
-      alt="FoodMood Logo" 
-      class="logo <?= $is_ok ? '' : 'logo--error' ?>" 
-    />
+      <img src="FoodMood_logo.png" alt="FoodMood Logo" class="logo" />
 
-    <h2 class="msg <?= $is_ok ? 'msg--ok' : 'msg--error' ?>">
-      <?= htmlspecialchars($message ?? '', ENT_QUOTES, 'UTF-8') ?>
-    </h2>
+      <h2 class="msg <?= $is_ok ? 'msg--ok' : 'msg--error' ?>">
+        <?= htmlspecialchars($message ?? '', ENT_QUOTES, 'UTF-8') ?>
+      </h2>
     
       <a href="meal_log.php"><button type="button">Show meal log</button></a> <br>
       <a href="home.php"><button type="button">Home</button></a> <br>
