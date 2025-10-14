@@ -126,3 +126,37 @@ p {
   transform: translateY(-2px);
 }
 
+/* ---------- Password field styling ---------- */
+
+/* Wrapper to control the password input and hint together */
+.password-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Hide hint initially */
+.password-hint {
+  display: none;
+  font-size: 13px;
+  color: #777;
+  margin-top: 6px;
+  text-align: center;
+  line-height: 1.4;
+  transition: opacity 0.3s ease;
+}
+
+/* When user hovers or focuses on password field — show hint */
+.password-field input:focus + .password-hint,
+.password-field:hover .password-hint {
+  display: block;
+  opacity: 1;
+}
+
+/* Add spacing consistency between fields */
+input[type="email"],
+input[type="password"] {
+  margin-bottom: 10px;
+  width: 100%;
+}

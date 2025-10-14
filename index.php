@@ -58,6 +58,8 @@ $link->close();
             <button type="submit" name="login">Login</button>
         </form>
 
+        <p><a href="reset_password_request.php">Forgot your password?</a></p>
+
         <p>Don't have an account?</p>
         <a href="register.php"><button type="button">Create account</button></a>
     </div>  
