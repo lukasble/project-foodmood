@@ -1,0 +1,63 @@
+<?php
+session_start();
+$isLoggedIn = !empty($_SESSION['user_id']); 
+
+$TERMS_VERSION = '1.0';
+$LAST_UPDATED = '2025-10-14'
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodMood: User agreement</title>
+  <link rel="stylesheet" href="index_style.css">
+  <style> 
+    .agreement-container {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        width: 800px;
+    }
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+<div class="agreement-container">
+    <h1>User Agreement (v <?= htmlspecialchars($TERMS_VERSION ?? '', ENT_QUOTES, 'UTF-8') ?>)</h1>
+    <p><em>Last updated: <?= htmlspecialchars($LAST_UPDATED ?? '', ENT_QUOTES, 'UTF-8') ?></em></p>
+    <h2>Instroduction</h2>
+    <p>text</p>
+    <h2>Sensetive data</h2>
+    <p>text</p>
+    <h2>Your responsibilities</h2>
+    <ul>
+        <li>item 1</li>
+        <li>item 2</li>
+    </ul>
+    <h2>Data usage</h2>
+    <p>text</p>
+    <h2>Disclaimer</h2>
+    <p>text</p>
+    <h2>Changes</h2>
+    <p>text</p>
+    <div class="center">
+      <?php if ($isLoggedIn): ?>
+        <a href="home.php"><button type="button">Back to home</button></a>
+      <?php else: ?>
+        <a href="register.php"><button type="button">Back to register</button></a>
+      <?php endif; ?>
+    </div>
+</div>
+</body>
+
