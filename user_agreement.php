@@ -2,8 +2,17 @@
 session_start();
 $isLoggedIn = !empty($_SESSION['user_id']); 
 
-$TERMS_VERSION = '1.0';
-$LAST_UPDATED = '2025-10-14'
+require_once __DIR__.'/user_agreement_config.php';
+
+$version = $_GET['v'] ?? TERMS_VERSION_CURRENT;
+$file = termsFile($version);
+
+if (!is_file($file)) {
+  http_response_code(404);
+  exit('Requested terms version not found.');
+}
+
+$agreementHtml = file_get_contents($file);
 
 ?>
 
@@ -33,31 +42,18 @@ $LAST_UPDATED = '2025-10-14'
 </head>
 
 <body>
-<div class="agreement-container">
-    <h1>User Agreement (v <?= htmlspecialchars($TERMS_VERSION ?? '', ENT_QUOTES, 'UTF-8') ?>)</h1>
-    <p><em>Last updated: <?= htmlspecialchars($LAST_UPDATED ?? '', ENT_QUOTES, 'UTF-8') ?></em></p>
-    <h2>Instroduction</h2>
-    <p>text</p>
-    <h2>Sensetive data</h2>
-    <p>text</p>
-    <h2>Your responsibilities</h2>
-    <ul>
-        <li>item 1</li>
-        <li>item 2</li>
-    </ul>
-    <h2>Data usage</h2>
-    <p>text</p>
-    <h2>Disclaimer</h2>
-    <p>text</p>
-    <h2>Changes</h2>
-    <p>text</p>
-    <div class="center">
-      <?php if ($isLoggedIn): ?>
-        <a href="home.php"><button type="button">Back to home</button></a>
-      <?php else: ?>
-        <a href="register.php"><button type="button">Back to register</button></a>
-      <?php endif; ?>
-    </div>
+<div class="agreement-container"> 
+  <main class="terms-container">
+      <strong>Version:</strong> <?= htmlspecialchars($version) ?>
+    <?= $agreementHtml ?>
+  </main>
+  <div class="center">
+    <?php if ($isLoggedIn): ?>
+      <a href="home.php"><button type="button">Back to home</button></a>
+    <?php else: ?>
+      <a href="register.php"><button type="button">Back to register</button></a>
+    <?php endif; ?>
+  </div>
 </div>
 </body>
 
