@@ -26,4 +26,42 @@ if ($result->num_rows > 0) {
         // Build reset link (change the domain to your actual server)
         $resetLink = "http://localhost/foodmood/reset_password.php?token=" . $token;
 
+        // Send email
+        $subject = "Reset your FoodMood password";
+        $body = "Click the following link to reset your password: " . $resetLink;
+        $headers = "From: no-reply@foodmood.com\r\n";
+
+        mail($email, $subject, $body, $headers);
+
+        $message = "A password reset link has been sent to your email.";
+    } else {
+        $message = "No account found with that email.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password - FoodMood</title>
+  <link rel="stylesheet" href="index_style.css">
+</head>
+    
+<body>
+    
+  <div class="register-container">
+    <h2>Reset Password</h2>
+    <p><?php echo $message; ?></p>
+    <form method="post">
+      <input type="email" name="email" placeholder="Enter your email" required>
+      <button type="submit">Send reset link</button>
+    </form>
+  </div>
+
+</body>
+    
+</html>
+
         
