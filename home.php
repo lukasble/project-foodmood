@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'login_control.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +20,10 @@ session_start();
 
       <a href="entry.php"><button type="button">Add entry</button></a> <br>
       <a href="meal_log.php"><button type="button">Show meal log</button></a> <br>
+
+      <hr class="rounded">
+
+      <a href="user_agreement.php"><button type="button">View user agreement</button></a> <br>     
   </div>
 
   <?php

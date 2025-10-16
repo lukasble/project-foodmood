@@ -1,6 +1,5 @@
 <?php
-session_start();
-
+include 'login_control.php';
 include 'db.php';
 
 $sql = "SELECT id, name, COALESCE(description,'') AS description 
@@ -37,21 +36,26 @@ if ($result && $result->num_rows > 0) {
 <body>
 <div class="container">
 
-  <?php echo '<h1>Add Meal for user: ' . $_SESSION['user_id'] . '</h1>'; ?> <!-- Debugging user_id -->
-
+  <h2>Please enter details of your meal:</h2>
 
   <form action="insert.php" method="POST" autocomplete="off">
+  <div class="form-row">
     <label for="name">Meal Name:</label>
-    <input type="text" id="name" name="name" maxlength="150"><br>
+    <input type="text" id="name" name="name" maxlength="150">
+  </div>
 
-    <label for="eaten_at">When did you eat it?</label>
-    <input type="datetime-local" id="eaten_at" name="eaten_at" required><br>
+  <div class="form-row">
+    <label for="eaten_at">Eaten at:</label>
+    <input type="datetime-local" id="eaten_at" name="eaten_at" required>
+  </div>
 
+  <div class="form-row">
     <label for="experience">Experience:</label>
     <select name="experience" id="experience" required>
       <option value="0">Good</option>
       <option value="1">Bad</option>
-    </select><br><br>
+    </select><br>
+  </div>
 
     <fieldset class="allergen-fieldset">
       <legend>Triggers</legend>
@@ -62,16 +66,15 @@ if ($result && $result->num_rows > 0) {
         $desc  = htmlspecialchars($data['desc'], ENT_QUOTES, 'UTF-8');
       ?>
         <div class="allergen">
-          <input type="hidden" name="<?= htmlspecialchars($key, ENT_QUOTES, 'UTF-8') ?>" value="0">
           <input
             type="checkbox"
             id="<?= $idAttr ?>"
             name="allergens[]"
-            value="<?= (int)$catID ?>"
+            value="<?= (int)$catId ?>"
             aria-describedby="<?= $tipId ?>"
             title="<?= $desc ?>"
           />
-          <label for="<?= $id ?>"><?= $label ?></label>
+          <label for="<?= $idAttr ?>"><?= $label ?></label>
           <div id="<?= $tipId ?>" class="tooltip" role="tooltip">
             <?= $desc ?>
           </div>
@@ -95,5 +98,14 @@ if ($result && $result->num_rows > 0) {
   }
 })();
 </script>
+
+<?php
+  if (session_status() === PHP_SESSION_NONE) { 
+      session_start();
+  }
+  if (isset($_SESSION['user_id'])) {
+      echo '<a href="logout.php"><button type="button" class="logout-btn">Log out</button></a>';
+  }
+?>
 </body>
 </html>

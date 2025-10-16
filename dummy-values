@@ -1,3 +1,11 @@
+-- User database agreement control --
+ALTER TABLE users
+  ADD COLUMN terms_accepted_at DATETIME NULL,
+  ADD COLUMN terms_version VARCHAR(20) NULL;
+-- User database agreement control --
+
+
+-- Categories dummy values --
 INSERT INTO categories (name, description, is_active)
 VALUES
 ('gluten', 'Protein found in wheat, barley, and rye. Can trigger reactions in celiac disease.', 1),
@@ -15,9 +23,10 @@ VALUES
 ('corn', 'Common cereal grain; may cause sensitivity in some individuals.', 1),
 ('caffeine', 'Stimulant found in coffee, tea, and energy drinks; may cause adverse effects.', 1),
 ('chocolate', 'Contains cocoa and milk derivatives; can trigger mild reactions.', 1);
+-- Categories dummy values --
 
 
-
+-- Meal log dummy values --
 INSERT INTO meal_logs (user_id, meal_name, eaten_at, experience, created_at)
 VALUES
 (1, 'Oatmeal with milk',            '2025-10-01 08:15:00', 0, NOW()),
@@ -40,9 +49,10 @@ VALUES
 (1, 'Pasta bolognese',              '2025-10-14 12:30:00', 0, NOW()),
 (1, 'Shrimp risotto',               '2025-10-14 19:00:00', 1, NOW()),
 (1, 'Avocado toast',                '2025-10-15 09:00:00', 0, NOW());
+-- Meal log dummy values --
 
 
-
+-- Meal log categories dummy values --
 INSERT INTO meal_log_categories (meal_log_id, category_id)
 VALUES
 -- 1. Oatmeal with milk
@@ -125,3 +135,56 @@ VALUES
 -- 20. Avocado toast
 (20, 1),  -- gluten
 (20, 13); -- corn
+-- Meal log categories dummy values --
+
+
+-- Research articles dummy values --
+INSERT INTO research_articles (title, url, category_id)
+VALUES
+-- 1. gluten
+('Non-celiac gluten sensitivity', 'https://www.health.harvard.edu/digestive-health/non-celiac-gluten-sensitivity', 1),
+
+-- 2. lactose
+('Understanding the Controversy: Milk and Its Role in Histamine Intolerance', 'https://www.oxfordgastrodietitians.com/post/understanding-the-controversy-milk-and-its-role-in-histamine-intolerance', 2),
+('Definition & Facts for Lactose Intolerance', 'https://www.niddk.nih.gov/health-information/digestive-diseases/lactose-intolerance/definition-facts', 2),
+
+-- 3. nuts
+-- ('text', 'text', 3),
+
+-- 4. soy
+('Including legumes on a low FODMAP diet', 'https://www.monashfodmap.com/blog/including-legumes-on-low-fodmap-diet/', 4),
+('Legumes: Good or Bad?', 'https://www.healthline.com/nutrition/legumes-good-or-bad', 4),
+
+-- 5. eggs
+-- ('text', 'text', 'text', 5),
+
+-- 6. fish
+-- ('text', 'text', 'text', 6),
+
+-- 7. shellfish
+-- ('text', 'text', 'text', 7),
+
+-- 8. sesame
+-- ('text', 'text', 'text', 8),
+
+-- 9. mustard
+-- ('text', 'text', 'text', 9),
+
+-- 10. celery
+-- ('text', 'text', 'text', 10),
+
+-- 11. sulfites
+-- ('text', 'text', 'text', 11),
+
+-- 12. fructose
+-- ('text', 'text', 'text', 12),
+
+-- 13. corn
+-- ('text', 'text', 'text', 13),
+
+-- 14. caffeine
+-- ('text', 'text', 'text', 14),
+
+-- 15. chocolate
+-- ('text', 'text', 'text', 15);
+-- Research articles dummy values --

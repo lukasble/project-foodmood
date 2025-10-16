@@ -1,13 +1,7 @@
 
 <?php
-session_start();
+include 'login_control.php';
 include 'db.php';
-
-if(!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo '<p class="msg msg--error">You must be logged in to view this page.</p>';
-    exit;   
-}
 
 $uid = (int)$_SESSION['user_id'];
 
@@ -97,6 +91,27 @@ $uid = (int)$_SESSION['user_id'];
         .button:hover {
             background-color: #e66f00;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .delete-button {
+            background: none;
+            border: none;
+            color: #d9534f;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .delete-button:hover {
+            color: #c9302c;
+            transform: scale(1.1);
+        }
     </style>
 
 
@@ -126,31 +141,58 @@ $uid = (int)$_SESSION['user_id'];
      $stmt->close();
     }
 
+    // Deleting an entry
+
+    if (isset($_POST['delete_entry'])) {
+     $id = (int)$_POST['id'];
+     
+     $stmt = $link->prepare("DELETE FROM meal_logs WHERE id = ? AND user_id = ?");
+     $stmt->bind_param("ii", $id, $uid);
+     $stmt->execute();
+     $stmt->close();
+    }
+
     if ($limit == "all") {
         $stmt = $link->prepare("
-            SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            WHERE user_id = ?
-            ORDER BY eaten_at DESC;
+           SELECT m.id, m.meal_name, m.eaten_at, m.experience,
+                   GROUP_CONCAT(c.name SEPARATOR ', ') AS categories
+            FROM meal_logs m
+            LEFT JOIN meal_log_categories mlc ON m.id = mlc.meal_log_id
+            LEFT JOIN categories c ON mlc.category_id = c.id
+            WHERE m.user_id = ?
+            GROUP BY m.id
+            ORDER BY m.eaten_at DESC; 
         ");
         $stmt->bind_param("i", $uid);
 } else {
     $limit = (int)$limit;
     $stmt = $link->prepare("
-            SELECT id, meal_name, eaten_at, experience 
-            FROM meal_logs
-            WHERE user_id = ?
-            ORDER BY eaten_at DESC
+            SELECT m.id, m.meal_name, m.eaten_at, m.experience,
+                   GROUP_CONCAT(c.name SEPARATOR ', ') AS categories
+            FROM meal_logs m
+            LEFT JOIN meal_log_categories mlc ON m.id = mlc.meal_log_id
+            LEFT JOIN categories c ON mlc.category_id = c.id
+            WHERE m.user_id = ?
+            GROUP BY m.id
+            ORDER BY m.eaten_at DESC
             LIMIT ?;
         ");
         $stmt->bind_param("ii", $uid, $limit);
 }
 
 $stmt->execute(); 
-
 $result = $stmt->get_result();
+
     echo '<table class="meal-log-table">';
-    echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th></tr></thead>';
+    echo '<thead>
+    <tr>
+    <th>Meal</th>
+    <th>Time Eaten</th>
+    <th>Experience</th>
+    <th>Categories</th>
+    <th>Actions</th>
+    </tr>
+    </thead>';
     echo '<tbody>';
 
     while($row = $result->fetch_assoc()) { 
@@ -166,33 +208,42 @@ $result = $stmt->get_result();
         }
                                           
         echo "<tr>
-                <td>" . $row["meal_name"] . "</td>
-                <td>" . $row["eaten_at"] . "</td>
-                <td>
-                    <form method='post' style='margin:0;'>
-                    <input type='hidden' name='id' value='" . $row["id"] . "'>
-                    <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
-                        <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
-                        <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
-                    </select>
-                    <input type='hidden' name='update_experience' value='1'>
-                </form>
-                </td>
-            </tr>";
-        }
-
+            <td>" . htmlspecialchars($row["meal_name"]) . "</td>
+            <td>" . htmlspecialchars($row["eaten_at"]) . "</td>
+            <td>
+            <form method='post' style='margin:0; display:inline-block;'>
+                <input type='hidden' name='id' value='" . $row["id"] . "'>
+                <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
+                    <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
+                    <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
+                </select>
+                <input type='hidden' name='update_experience' value='1'>
+            </form>
+            </td>
+            <td>" . ($row["categories"] ? htmlspecialchars($row["categories"]) : '—') . "</td>
+            <td style='text-align:center;'>
+            <form method='post' style='margin:0; display:inline-block;'>
+                <input type='hidden' name='id' value='" . $row["id"] . "'>
+                <input type='hidden' name='delete_entry' value='1'>
+                <button type='submit' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this entry?');\">🗑️</button>
+            </form>
+            </td>
+        </tr>";
+    }
     echo '</tbody></table>';
 
     $stmt->close();
     $link->close();
     
     ?>
+<div class="button-container">
+        <a href="home.php" class="button">Back to Home</a>
+        <a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
+    </div>
 
 </div>
 
-<a href="home.php" class="button">Back to home</a>
 
-<a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
 
 <?php
     if (session_status() === PHP_SESSION_NONE) { 
