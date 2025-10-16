@@ -34,5 +34,7 @@ include 'login_control.php';
         echo '<a href="logout.php"><button type="button" class="logout-btn">Log out</button></a>';
     }
     ?>
-  
+  <a href="settings.php" class="settings-btn">Settings</a>
+
+
 </body> 

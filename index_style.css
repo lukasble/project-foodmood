@@ -120,3 +120,23 @@ p {
 .logout-btn:hover {
     background-color: #e66f00;
 }
+
+/* ---------- Settings button ---------- */
+.settings-btn {
+    position: absolute;
+    top: 84px; 
+    right: 20px;
+    padding: 10px 16px;
+    background-color: #ff7b00;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.settings-btn:hover {
+    background-color: #e66f00;
+}

@@ -4,7 +4,7 @@ include 'db.php';
 
 $uid  = (int)$_SESSION['user_id'];
 $minN = 5;
-$lookback_min = 60;
+$lookback_min = isset($_SESSION['lookback_min']) ? (int)$_SESSION['lookback_min'] : 60; // default ON
 
 if (!isset($link) || !$link) {
   http_response_code(500);
@@ -15,7 +15,7 @@ if (!isset($link) || !$link) {
 // Replaces underscores with spaces for displaying to the user. 
 function humanize($s){ return ucfirst(str_replace('_',' ',$s)); }
 
-/*
+/* OLD ANALYSIS
   Schema query:
   - Count exposures per category for this user (via JOINs)
   - Compute bad_exposures and bad_pct
@@ -118,7 +118,7 @@ if (!empty($top)) {
   $catIds = array_column($top, 'category_id');
   $n      = count($catIds);
 
-  // Build placeholders, for example 3 categories would be ['?', '?', '?']
+  // Build placeholders ['?', '?', '?']
   $ph = implode(',', array_fill(0, $n, '?'));
 
 $sqlArt = " SELECT research_articles.category_id, research_articles.title, research_articles.url
