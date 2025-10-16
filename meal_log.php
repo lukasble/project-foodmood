@@ -91,6 +91,27 @@ $uid = (int)$_SESSION['user_id'];
         .button:hover {
             background-color: #e66f00;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .delete-button {
+            background: none;
+            border: none;
+            color: #d9534f;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .delete-button:hover {
+            color: #c9302c;
+            transform: scale(1.1);
+        }
     </style>
 
 
@@ -116,6 +137,17 @@ $uid = (int)$_SESSION['user_id'];
 
      $stmt = $link->prepare("UPDATE meal_logs SET experience = ? WHERE id = ? AND user_id = ?");
      $stmt->bind_param("iii", $new_experience, $id, $uid);
+     $stmt->execute();
+     $stmt->close();
+    }
+
+    // Deleting an entry
+
+    if (isset($_POST['delete_entry'])) {
+     $id = (int)$_POST['id'];
+     
+     $stmt = $link->prepare("DELETE FROM meal_logs WHERE id = ? AND user_id = ?");
+     $stmt->bind_param("ii", $id, $uid);
      $stmt->execute();
      $stmt->close();
     }
@@ -152,7 +184,15 @@ $stmt->execute();
 $result = $stmt->get_result();
 
     echo '<table class="meal-log-table">';
-    echo '<thead><tr><th>Meal</th><th>Time Eaten</th><th>Experience</th><th>Categories</th></tr></thead>';
+    echo '<thead>
+    <tr>
+    <th>Meal</th>
+    <th>Time Eaten</th>
+    <th>Experience</th>
+    <th>Categories</th>
+    <th>Actions</th>
+    </tr>
+    </thead>';
     echo '<tbody>';
 
     while($row = $result->fetch_assoc()) { 
@@ -168,34 +208,42 @@ $result = $stmt->get_result();
         }
                                           
         echo "<tr>
-                <td>" . $row["meal_name"] . "</td>
-                <td>" . $row["eaten_at"] . "</td>
-                <td>
-                    <form method='post' style='margin:0;'>
-                    <input type='hidden' name='id' value='" . $row["id"] . "'>
-                    <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
-                        <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
-                        <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
-                    </select>
-                    <input type='hidden' name='update_experience' value='1'>
-                </form>
-                </td>
-                <td>" . ($row["categories"] ? htmlspecialchars($row["categories"]) : '—') . "</td>
-            </tr>";
-        }
-
+            <td>" . htmlspecialchars($row["meal_name"]) . "</td>
+            <td>" . htmlspecialchars($row["eaten_at"]) . "</td>
+            <td>
+            <form method='post' style='margin:0; display:inline-block;'>
+                <input type='hidden' name='id' value='" . $row["id"] . "'>
+                <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
+                    <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
+                    <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
+                </select>
+                <input type='hidden' name='update_experience' value='1'>
+            </form>
+            </td>
+            <td>" . ($row["categories"] ? htmlspecialchars($row["categories"]) : '—') . "</td>
+            <td style='text-align:center;'>
+            <form method='post' style='margin:0; display:inline-block;'>
+                <input type='hidden' name='id' value='" . $row["id"] . "'>
+                <input type='hidden' name='delete_entry' value='1'>
+                <button type='submit' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this entry?');\">🗑️</button>
+            </form>
+            </td>
+        </tr>";
+    }
     echo '</tbody></table>';
 
     $stmt->close();
     $link->close();
     
     ?>
+<div class="button-container">
+        <a href="home.php" class="button">Back to Home</a>
+        <a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
+    </div>
 
 </div>
 
-<a href="home.php" class="button">Back to home</a>
 
-<a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
 
 <?php
     if (session_status() === PHP_SESSION_NONE) { 
