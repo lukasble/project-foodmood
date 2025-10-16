@@ -1,5 +1,5 @@
 <?php
-require 'db.php'; // include your DB connection
+require 'db.php'; 
 session_start();
 
 $message = "";
@@ -18,12 +18,12 @@ if ($result->num_rows > 0) {
         $token = bin2hex(random_bytes(50));
         $expires = date("U") + 3600; // expires in 1 hour
 
-        // Store token and expiration in database (create columns if not existing)
+        // Store token and expiration in database
         $stmt = $conn->prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE email=?");
         $stmt->bind_param("sis", $token, $expires, $email);
         $stmt->execute();
 
-        // Build reset link (change the domain to your actual server)
+        // Build reset link
         $resetLink = "http://localhost/foodmood/reset_password.php?token=" . $token;
 
         // Send email
