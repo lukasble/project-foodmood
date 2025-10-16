@@ -13,7 +13,7 @@ $user_terms_version = $_SESSION['terms_version'] ?? null;
 
 if ($user_terms_version !== TERMS_VERSION_CURRENT) {
   $return = urlencode($_SERVER['REQUEST_URI']);
-  header("Location: user_agreement.php?return=$return");
+  header("Location: user_agreement.php?mode=accept&return=$return");
   exit;
 }
 ?>
