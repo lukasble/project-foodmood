@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+include 'db.php';
 session_start();
 
 $token = $_GET['token'] ?? '';
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Password must be at least 8 characters, include an uppercase, a lowercase, and a number.";
     } else {
         // Verify token validity
-        $stmt = $conn->prepare("SELECT * FROM users WHERE reset_token=? AND reset_expires > ?");
+        $stmt = $link->prepare("SELECT * FROM users WHERE reset_token=? AND reset_expires > ?");
         $now = date("U");
         $stmt->bind_param("si", $token, $now);
         $stmt->execute();
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Update new password and clear token
-            $stmt = $conn->prepare("UPDATE users SET password=?, reset_token=NULL, reset_expires=NULL WHERE email=?");
+            $stmt = $link->prepare("UPDATE users SET password=?, reset_token=NULL, reset_expires=NULL WHERE email=?");
             $stmt->bind_param("ss", $hashedPassword, $user['email']);
             $stmt->execute();
 
@@ -54,12 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p><?php echo $message; ?></p>
 
     <?php if (!$_POST) { ?>
+                        
     <form method="post">
       <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
       <input type="password" name="password" placeholder="Enter new password" required>
       <input type="password" name="confirm" placeholder="Confirm new password" required>
       <button type="submit">Reset Password</button>
     </form>
+      
     <?php } ?>
   </div>
   
