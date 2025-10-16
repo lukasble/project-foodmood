@@ -19,7 +19,7 @@ if ($result->num_rows > 0) {
         $expires = date("U") + 3600; // expires in 1 hour
 
         // Store token and expiration in database
-        $stmt = $conn->prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE email=?");
+        $stmt = $link->prepare("UPDATE users SET reset_token=?, reset_expires=? WHERE email=?");
         $stmt->bind_param("sis", $token, $expires, $email);
         $stmt->execute();
 
@@ -54,10 +54,12 @@ if ($result->num_rows > 0) {
   <div class="register-container">
     <h2>Reset Password</h2>
     <p><?php echo $message; ?></p>
+      
     <form method="post">
       <input type="email" name="email" placeholder="Enter your email" required>
       <button type="submit">Send reset link</button>
     </form>
+      
   </div>
 
 </body>
