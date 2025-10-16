@@ -2,11 +2,14 @@
 include 'db.php';
 session_start();
 
+require_once __DIR__.'/user_agreement_config.php';
+
+$terms_accepted = gmdate('Y-m-d H:i:s');
+$terms_version = TERMS_VERSION_CURRENT;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $terms_accepted = gmdate('Y-m-d H:i:s');
-    $terms_version = '1.0';
 
     // Hashed password 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
