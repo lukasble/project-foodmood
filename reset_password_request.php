@@ -37,14 +37,33 @@ if ($result->num_rows > 0) {
         // Build reset link
         $resetLink = "http://localhost/foodmood/reset_password.php?token=" . $token;
 
-        // Send email
-        $subject = "Reset your FoodMood password";
-        $body = "Click the following link to reset your password: " . $resetLink;
-        $headers = "From: no-reply@foodmood.com\r\n";
+        // -------------------
+        // Send email using PHPMailer
+        // -------------------
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'foodmoodweb@gmail.com'; 
+            $mail->Password   = 'vudxpvvwbrlgyugy'; 
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        mail($email, $subject, $body, $headers);
+            $mail->setFrom('foodmoodweb@gmail.com', 'FoodMood');
+            $mail->addAddress($email);
 
-        $message = "A password reset link has been sent to your email.";
+            $mail->isHTML(true);
+            $mail->Subject = 'Reset your FoodMood password';
+            $mail->Body    = "Click the following link to reset your password: <a href='$resetLink'>$resetLink</a>";
+
+            $mail->send();
+            $message = "A password reset link has been sent to your email.";
+
+        } catch (Exception $e) {
+            $message = "Could not send email. Mailer Error: {$mail->ErrorInfo}";
+        }
+
     } else {
         $message = "No account found with that email.";
     }
