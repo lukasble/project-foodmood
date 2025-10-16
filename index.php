@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $link->prepare("SELECT id, password_hash FROM users WHERE email = ?");
+    $stmt = $link->prepare("SELECT id, password_hash, terms_version FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             // Save user session
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['email'] = $email;
+            $_SESSION['terms_version'] = $row['terms_version'];
             header("Location: home.php");
             exit();
         } else {
