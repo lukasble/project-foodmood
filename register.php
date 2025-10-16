@@ -8,24 +8,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $terms_accepted = gmdate('Y-m-d H:i:s');
     $terms_version = '1.0';
 
-    // Hashed password 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Password validation
+    $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
 
-    // Generation of verification token
-    // DELETE?? $token = bin2hex(random_bytes(16));
-
-    $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted, $terms_version);
-
-    if ($stmt->execute()) {
-        $success = "Registration successful! You can now log in.";
+    if (!preg_match($passwordPattern, $password)) {
+        $error = "Password must be at least 8 characters long, include one lowercase letter, one uppercase letter, and one number.";
     } else {
-        $error = "Error: " . $stmt->error;
+    
+        // Hashed password 
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted, $terms_version);
+
+        if ($stmt->execute()) {
+            $success = "Registration successful! You can now log in.";
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $link->close();
     }
-
-    $stmt->close();
-    $link->close();
-
 }
 ?>
 
@@ -40,7 +44,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <style>
         .accept-terms {
             display: flex;
+        align-items: center;
+            gap: 8px;
         }
+
+        input[type="password"] {
+            position: relative;
+        }
+
+        input[type="password"][title]:hover {
+            cursor: help;
+        }
+        
     </style>
 </head>
 
@@ -58,7 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
   
         <form action="register.php" method="post">
             <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
+
+            <!-- Tooltip text via title attribute -->
+            <input type="password" 
+                   name="password" 
+                   placeholder="Enter your password" 
+                   required
+                   title="Password must be minimum 8 characters, one lowercase, one uppercase, and one number.">
 
 
             <div class="aceept-terms">
