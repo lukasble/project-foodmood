@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-  http_response_code(401);
-  echo '<p class="msg msg--error">You must be logged in.</p>';
+if (empty($_SESSION['user_id'])) {
+  $return = urlencode($_SERVER['REQUEST_URI']);
+  header("Location: index.php?return=$return");
   exit;
 }
 ?>
