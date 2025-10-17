@@ -5,9 +5,11 @@
 CREATE TABLE users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL
+  password_hash VARCHAR(255) NOT NULL,
   terms_accepted_at DATETIME NULL,
-  terms_version VARCHAR(20) NULL;
+  terms_version VARCHAR(20) NULL,
+  reset_token VARCHAR(255) NULL,
+  reset_expires INT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
