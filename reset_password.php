@@ -9,12 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $confirm = $_POST['confirm'];
     $token = $_POST['token'];
+    $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
 
     if ($password !== $confirm) {
         $message = "Passwords do not match.";
-    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)) {
-        $message = "Password must be at least 8 characters, include an uppercase, a lowercase, and a number.";
+    }  elseif (!preg_match($passwordPattern, $password)) {
+        $error = "Password must be at least 8 characters long, include one lowercase letter, one uppercase letter, and one number.";
     } else {
+        
         // Verify token validity
         $stmt = $link->prepare("SELECT * FROM users WHERE reset_token=? AND reset_expires > ?");
         $now = date("U");
