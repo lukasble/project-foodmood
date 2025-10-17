@@ -2,11 +2,14 @@
 include 'db.php';
 session_start();
 
+require_once __DIR__.'/user_agreement_config.php';
+
+$rendered_terms_version = TERMS_VERSION_CURRENT;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $terms_accepted = gmdate('Y-m-d H:i:s');
-    $terms_version = '1.0';
+    $posted_version = $_POST['terms_version_shown'] ?? null;
 
     // Password validation
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
@@ -20,6 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
         $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted, $terms_version);
+
+        if ($stmt->execute()) {
+            $success = "Registration successful! You can now log in.";
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+
+    if ($posted_version !== TERMS_VERSION_CURRENT) {
+        $error = "The user agreement has been updated. Please review the latest version before continuing.";
+    }  
+
+    else {
+        $terms_accepted_at = gmdate('Y-m-d H:i:s');
+
+        // Hashed password 
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // Generation of verification token
+        // DELETE?? $token = bin2hex(random_bytes(16));
+
+        $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted_at, $posted_version);
 
         if ($stmt->execute()) {
             $success = "Registration successful! You can now log in.";
@@ -44,8 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <style>
         .accept-terms {
             display: flex;
-        align-items: center;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
+            margin: 8px 0 16px;
+        }
+        .accept-terms input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            flex: 0 0 auto;
+        }
+        .accept-terms label { margin: 0; }
+        .accept-terms a { text-decoration: underline; }
+        .accept-terms input[type="checkbox"]{
+            accent-color:#ff7b00;
+            transform:scale(1.3);
+            transform-origin:center;
+            vertical-align:middle;
         }
 
         input[type="password"] {
@@ -81,11 +121,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                    required
                    title="Password must be minimum 8 characters, one lowercase, one uppercase, and one number.">
 
+            <input type="hidden" name="terms_version_shown" value="<?php echo htmlspecialchars($rendered_terms_version); ?>">
 
-            <div class="aceept-terms">
+            <div class="accept-terms">
             <input type="checkbox" id="accept_terms" name="accept_terms" value="1" required>
             <label for="accept_terms"> 
-                I accept <a href="user_agreement.php"> terms of service</a>
+                I accept the <a href="user_agreement.php?v=<?php echo urlencode($rendered_terms_version); ?>"
+                target="_blank" rel="noopener">terms of service</a>
             </label>
             </div>
 
