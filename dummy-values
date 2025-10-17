@@ -4,6 +4,11 @@ ALTER TABLE users
   ADD COLUMN terms_version VARCHAR(20) NULL;
 -- User database agreement control --
 
+-- Reset password control --
+ALTER TABLE users
+ADD COLUMN reset_token VARCHAR(255) NULL,
+ADD COLUMN reset_expires INT NULL;
+-- Reset password control --
 
 -- Categories dummy values --
 INSERT INTO categories (name, description, is_active)
