@@ -9,7 +9,7 @@ CREATE TABLE users (
   terms_accepted_at DATETIME NULL,
   terms_version VARCHAR(20) NULL,
   reset_token VARCHAR(255) NULL,
-  reset_expires INT NULL,
+  reset_expires INT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
