@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
     if (!preg_match($passwordPattern, $password)) {
         $error = "Password must be at least 8 characters long, include one lowercase letter, one uppercase letter, and one number.";
+    } elseif ($posted_version !== TERMS_VERSION_CURRENT) {
+        $error = "The user agreement has been updated. Please review the latest version before continuing.";
     } else {
     
         // Hashed password 
@@ -23,28 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
         $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted, $terms_version);
-
-        if ($stmt->execute()) {
-            $success = "Registration successful! You can now log in.";
-        } else {
-            $error = "Error: " . $stmt->error;
-        }
-
-    if ($posted_version !== TERMS_VERSION_CURRENT) {
-        $error = "The user agreement has been updated. Please review the latest version before continuing.";
-    }  
-
-    else {
-        $terms_accepted_at = gmdate('Y-m-d H:i:s');
-
-        // Hashed password 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // Generation of verification token
-        // DELETE?? $token = bin2hex(random_bytes(16));
-
-        $stmt = $link->prepare("INSERT INTO users (email, password_hash, terms_accepted_at, terms_version) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $email, $hashedPassword, $terms_accepted_at, $posted_version);
 
         if ($stmt->execute()) {
             $success = "Registration successful! You can now log in.";
