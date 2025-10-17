@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
         $stmt->execute();
 
         // Build reset link
-        $resetLink = "http://localhost/foodmood/reset_password.php?token=" . $token;
+        $resetLink = "http://localhost/reset_password.php?token=" . $token;
 
         // -------------------
         // Send email using PHPMailer
