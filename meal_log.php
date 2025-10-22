@@ -141,6 +141,20 @@ $uid = (int)$_SESSION['user_id'];
      $stmt->close();
     }
 
+    // Updating meak time/date
+
+    if (isset($_POST['update_eaten_at'])) {
+        $id = (int)$_POST['id'];
+        $new_time = $_POST['eaten_at'];
+
+        $stmt = $link->prepare("UPDATE meal_logs SET eaten_at = ? WHERE id = ? AND user_id = ?");
+        $stmt->bind_param("sii", $new_time, $id, $uid);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    
+
     // Updating meal name
 
     if(isset($_POST['update_meal_name'])) {
@@ -226,7 +240,12 @@ $result = $stmt->get_result();
                     <input type='text' name='meal_name' value='" . htmlspecialchars($row["meal_name"]) . "' onchange='this.form.submit()' style='width: 150px;'>
                     <input type='hidden' name='update_meal_name' value='1'>
             </td>
-            <td>" . htmlspecialchars($row["eaten_at"]) . "</td>
+            <td>
+            <form method='post' style='margin:0; display:inline-block;'>
+                <input type='hidden' name='id' value='" . $row["id"] . "'>
+                <input type='datetime-local' name='eaten_at' value='" . date('Y-m-d\TH:i', strtotime($row["eaten_at"])) . "' onchange='this.form.submit()'>
+                <input type='hidden' name='update_eaten_at' value='1'>
+            </td>
             <td>
             <form method='post' style='margin:0; display:inline-block;'>
                 <input type='hidden' name='id' value='" . $row["id"] . "'>
