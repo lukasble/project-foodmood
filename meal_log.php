@@ -141,6 +141,18 @@ $uid = (int)$_SESSION['user_id'];
      $stmt->close();
     }
 
+    // Updating meal name
+
+    if(isset($_POST['update_meal_name'])) {
+     $id = (int)$_POST['id'];
+     $new_meal_name = $_POST['meal_name'];
+
+     $stmt = $link->prepare("UPDATE meal_logs SET meal_name = ? WHERE id = ? AND user_id = ?");
+     $stmt->bind_param("sii", $new_meal_name, $id, $uid);
+     $stmt->execute();
+     $stmt->close();
+    }
+
     // Deleting an entry
 
     if (isset($_POST['delete_entry'])) {
@@ -208,7 +220,12 @@ $result = $stmt->get_result();
         }
                                           
         echo "<tr>
-            <td>" . htmlspecialchars($row["meal_name"]) . "</td>
+            <td>
+                <form method='post' style='margin:0; display:inline-block;'>
+                    <input type='hidden' name='id' value='" . $row["id"] . "'>
+                    <input type='text' name='meal_name' value='" . htmlspecialchars($row["meal_name"]) . "' onchange='this.form.submit()' style='width: 150px;'>
+                    <input type='hidden' name='update_meal_name' value='1'>
+            </td>
             <td>" . htmlspecialchars($row["eaten_at"]) . "</td>
             <td>
             <form method='post' style='margin:0; display:inline-block;'>
