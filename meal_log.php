@@ -277,8 +277,14 @@ $result = $stmt->get_result();
         <a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
     </div>
 
-</div>
+<section class="meal-log-note" style="margin-top:2rem;font-size:0.9rem;line-height:1.4;color:#555;">
+  <strong>Note:</strong> The analysis feature can include meals that happened shortly
+  before a bad experience (a time-based lookback window). You can turn it ON
+  or OFF in settings.
+</section>
 
+
+</div>
 
 
 <?php
