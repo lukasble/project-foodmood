@@ -9,6 +9,20 @@ $uid = (int)$_SESSION['user_id'];
 
     $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
 
+// Track which meal is being edited for categories or name
+
+    $editMealId = isset($_GET['edit_meal']) ? (int)$_GET['edit_meal'] : null;
+    $edit_id = isset($_GET['edit_id']) ? (int)$_GET['edit_id'] : null;
+
+function getCategoryOptions($allCategories, $selectedList) {
+    $selectedNames = array_map('trim', explode(',', $selectedList ?? ''));
+    $html = "";
+    foreach ($allCategories as $id => $name) {
+        $selected = in_array($name, $selectedNames) ? "selected" : "";
+        $html .= "<option value='$id' $selected>" . htmlspecialchars($name) . "</option>";
+    }
+    return $html;
+}
 ?>
 
 <!DOCTYPE html>
@@ -153,31 +167,47 @@ $uid = (int)$_SESSION['user_id'];
         $stmt->close();
     }
 
-    
+    // Updating categories
 
-    // Updating meal name
+    if (isset($_POST['update_categories'])) {
+        $id = (int)$_POST['id'];
+        $selectedCategories = isset($_POST['categories']) ? $_POST['categories'] : [];
 
-    if(isset($_POST['update_meal_name'])) {
-     $id = (int)$_POST['id'];
-     $new_meal_name = $_POST['meal_name'];
+        $stmt = $link->prepare("DELETE FROM meal_log_categories WHERE meal_log_id = ? AND meal_log_id IN (SELECT id FROM meal_logs WHERE user_id = ?)");
+        $stmt->bind_param("ii", $id, $uid);
+        $stmt->execute();
+        $stmt->close();
 
-     $stmt = $link->prepare("UPDATE meal_logs SET meal_name = ? WHERE id = ? AND user_id = ?");
-     $stmt->bind_param("sii", $new_meal_name, $id, $uid);
-     $stmt->execute();
-     $stmt->close();
+    if (!empty($selectedCategories)) {
+        $stmt = $link->prepare("INSERT INTO meal_log_categories (meal_log_id, category_id) VALUES (?, ?)");
+        foreach ($selectedCategories as $cat_id) {
+            $cat_id = (int)$cat_id;
+            $stmt->bind_param("ii", $id, $cat_id);
+            $stmt->execute();
+        }
+        $stmt->close();
     }
-
-    // Deleting an entry
+    }
 
     if (isset($_POST['delete_entry'])) {
-     $id = (int)$_POST['id'];
-     
-     $stmt = $link->prepare("DELETE FROM meal_logs WHERE id = ? AND user_id = ?");
-     $stmt->bind_param("ii", $id, $uid);
-     $stmt->execute();
-     $stmt->close();
+        $id = (int)$_POST['id'];
+    
+        $stmt = $link->prepare("DELETE FROM meal_logs WHERE id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $id, $uid);
+        $stmt->execute();
+        $stmt->close();
     }
 
+    // Fetch categories
+    
+    $categoriesResult = $link->query("SELECT id, name FROM categories ORDER BY name ASC");
+    $allCategories = [];
+    while ($cat = $categoriesResult->fetch_assoc()) {
+        $allCategories[$cat['id']] = $cat['name'];
+    }
+
+    // Fetch meal logs
+    
     if ($limit == "all") {
         $stmt = $link->prepare("
            SELECT m.id, m.meal_name, m.eaten_at, m.experience,
@@ -221,52 +251,81 @@ $result = $stmt->get_result();
     </thead>';
     echo '<tbody>';
 
-    while($row = $result->fetch_assoc()) { 
+while ($row = $result->fetch_assoc()) {
+    $experienceText = ($row["experience"] == 0) ? "Good" : "Bad";
+    $experienceClass = ($row["experience"] == 0) ? "good-exp" : "bad-exp";
+    ?>
+    <tr>
+        <td>
+            <?php if ($editMealId === (int)$row["id"]) : ?>
+                <form method="post" style="margin:0; display:inline-block;">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($row["id"]) ?>">
+                    <input type="text" name="meal_name" value="<?= htmlspecialchars($row["meal_name"]) ?>" style="width:150px;">
+                    <input type="hidden" name="update_meal_name" value="1">
+                    <button type="submit" style="background:none; border:none; color:#ff7b00; font-size:16px;">💾</button>
+                    <a href="meal_log.php" style="font-size:12px; margin-left:5px;">Cancel</a>
+                </form>
+            <?php else : ?>
+                <?= htmlspecialchars($row["meal_name"]) ?>
+                <a href="?edit_meal=<?= urlencode($row["id"]) ?>" title="Edit meal name" style="text-decoration:none; font-size:16px; margin-left:5px;">✏️</a>
+            <?php endif; ?>
+        </td>
 
-        $experienceText = "";
+        <td>
+            <form method="post" style="margin:0; display:inline-block;">
+                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                <input type="datetime-local" name="eaten_at" value="<?= date('Y-m-d\TH:i', strtotime($row["eaten_at"])) ?>" onchange="this.form.submit()">
+                <input type="hidden" name="update_eaten_at" value="1">
+            </form>
+        </td>
 
-        if ($row["experience"] == 0) {
-            $experienceText = "Good";
-            $experienceClass = "good-exp";
-        } else {
-            $experienceText = "Bad";
-            $experienceClass = "bad-exp";
-        }
-                                          
-        echo "<tr>
-            <td>
-                <form method='post' style='margin:0; display:inline-block;'>
-                    <input type='hidden' name='id' value='" . $row["id"] . "'>
-                    <input type='text' name='meal_name' value='" . htmlspecialchars($row["meal_name"]) . "' onchange='this.form.submit()' style='width: 150px;'>
-                    <input type='hidden' name='update_meal_name' value='1'>
-            </td>
-            <td>
-            <form method='post' style='margin:0; display:inline-block;'>
-                <input type='hidden' name='id' value='" . $row["id"] . "'>
-                <input type='datetime-local' name='eaten_at' value='" . date('Y-m-d\TH:i', strtotime($row["eaten_at"])) . "' onchange='this.form.submit()'>
-                <input type='hidden' name='update_eaten_at' value='1'>
-            </td>
-            <td>
-            <form method='post' style='margin:0; display:inline-block;'>
-                <input type='hidden' name='id' value='" . $row["id"] . "'>
-                <select name='experience' class='" . $experienceClass . "' onchange='this.form.submit()'>
-                    <option value='0' " . ($row["experience"] == 0 ? "selected" : "") . ">Good</option>
-                    <option value='1' " . ($row["experience"] == 1 ? "selected" : "") . ">Bad</option>
+        <td>
+            <form method="post" style="margin:0; display:inline-block;">
+                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                <select name="experience" class="<?= $experienceClass ?>" onchange="this.form.submit()">
+                    <option value="0" <?= ($row["experience"] == 0 ? "selected" : "") ?>>Good</option>
+                    <option value="1" <?= ($row["experience"] == 1 ? "selected" : "") ?>>Bad</option>
                 </select>
-                <input type='hidden' name='update_experience' value='1'>
+                <input type="hidden" name="update_experience" value="1">
             </form>
-            </td>
-            <td>" . ($row["categories"] ? htmlspecialchars($row["categories"]) : '—') . "</td>
-            <td style='text-align:center;'>
-            <form method='post' style='margin:0; display:inline-block;'>
-                <input type='hidden' name='id' value='" . $row["id"] . "'>
-                <input type='hidden' name='delete_entry' value='1'>
-                <button type='submit' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this entry?');\">🗑️</button>
+        </td>
+
+        <td>
+            <?php if ($edit_id === (int)$row["id"]) : ?>
+                <form method="post" style="margin:0;">
+                    <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                    <select name="categories[]" multiple size="4" style="width:130px;">
+                        <?php
+                        $selectedCats = array_map('trim', explode(',', $row["categories"] ?? ''));
+                        foreach ($allCategories as $cat_id => $cat_name) {
+                            $selected = in_array($cat_name, $selectedCats) ? "selected" : "";
+                            echo "<option value='$cat_id' $selected>" . htmlspecialchars($cat_name) . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <br>
+                    <button type="submit" name="update_categories">Save</button>
+                    <a href="meal_log.php" style="font-size:12px; margin-left:5px;">Cancel</a>
+                </form>
+            <?php else : ?>
+                <?= htmlspecialchars($row["categories"] ?: '—') ?>
+                <a href="?edit_id=<?= urlencode($row["id"]) ?>" title="Edit categories" style="text-decoration:none; font-size:16px; margin-left:5px;">✏️</a>
+            <?php endif; ?>
+        </td>
+
+        <td style="text-align:center;">
+            <form method="post" style="margin:0; display:inline-block;">
+                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                <input type="hidden" name="delete_entry" value="1">
+                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this entry?');">🗑️</button>
             </form>
-            </td>
-        </tr>";
-    }
-    echo '</tbody></table>';
+        </td>
+    </tr>
+    <?php
+}
+
+
+echo '</tbody></table>';
 
     $stmt->close();
     $link->close();
@@ -275,11 +334,7 @@ $result = $stmt->get_result();
 <div class="button-container">
         <a href="home.php" class="button">Back to Home</a>
         <a href="analysis_basic.php" class="button">Make Basic Frequency Analysis</a>
-    </div>
-
 </div>
-
-
 
 <?php
     if (session_status() === PHP_SESSION_NONE) { 
