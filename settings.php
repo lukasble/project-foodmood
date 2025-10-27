@@ -25,8 +25,7 @@ $on = ($_SESSION['lookback_min'] ?? 60) > 0;
   <div class="analysis-wrap">
     <form id="analysis" method="post">
       <h1>Settings</h1>
-      <p>Control the “lag window” used in the analysis. When ON, the frequency analysis
-        considers exposures of other meals in the last 60 minutes before a bad experience; when OFF, the frequency analysis doesn’t use a timeframe at all and only considers the manual logged bad experiences.</p>
+      <p>Control the “lag window” used in the analysis. When ON, a meal can count as a possible trigger if it was eaten in the 60 minutes leading up to an unpleasant experience (including that unpleasant meal itself); when OFF, only the meal you marked as unpleasant is considered.</p>
 
       <label class="allergen" style="align-items:center;">
         <input type="checkbox" name="lag_on" <?= $on ? 'checked' : '' ?>>

@@ -217,10 +217,14 @@ $sqlArt = " SELECT research_articles.category_id, research_articles.title, resea
           </div>
         <?php endforeach; ?>
       </div>
-
       <a href="/meal_log.php" class="btn btn--secondary">← Back to meal logs</a>
     <?php endif; ?>
   </main>
+  <section class="analysis-disclaimer" style="margin-top:2rem;font-size:0.9rem;line-height:1.4;color:#555;">
+  <strong>Note:</strong> This page shows a frequency-based association only. It highlights categories that often
+  appear shortly before (or during) bad experiences within the selected time window. It does not prove medical
+  cause and effect, and it may miss factors that were not logged.
+    </section>
   </div></div>
 </body>
 </html>
