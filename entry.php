@@ -58,7 +58,7 @@ if ($result && $result->num_rows > 0) {
   </div>
 
     <fieldset class="allergen-fieldset">
-      <legend>Triggers</legend>
+      <legend>Categories</legend>
       <?php foreach ($allergens as $catId => $data):
         $idAttr = "allergen_$catId";
         $tipId = "tip_$catId";
