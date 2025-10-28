@@ -58,12 +58,12 @@ try {
   }
 
   $link->commit();
-  $message = "Sparat!";
+  $message = "Meal saved!";
   $is_ok = true;
 
 } catch (Throwable $e) {
   $link->rollback();
-  $message = "Fel vid sparande: ".$e->getMessage();
+  $message = "Error: ".$e->getMessage();
   $is_ok = false;
 } finally {
   $link->close();
