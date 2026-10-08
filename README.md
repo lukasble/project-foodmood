@@ -15,6 +15,35 @@ FoodMood is built around one core idea: people often want to understand whether 
 
 The result is a personal health-tracking dashboard that feels approachable, lightweight, and focused on data collection and reflection.
 
+---
+
+## Screenshots
+
+Below are key screens from the application, stored in the `screenshots` folder and ready to be showcased in the project portfolio.
+
+### Login screen
+![Login screen](screenshots/login.png)
+
+### Home dashboard
+![Home dashboard](screenshots/home.png)
+
+### Create account
+![Create account](screenshots/create_account.png)
+
+### Add meal entry
+![Add meal entry](screenshots/add_entry.png)
+
+### Meal history
+![Meal history](screenshots/history.png)
+
+### Analysis page
+![Analysis page](screenshots/analysis.png)
+
+### User agreement
+![User agreement](screenshots/user_agreement.png)
+
+---
+
 ## Why this project matters
 
 This app combines data entry, relationship analysis, and user-focused design in a way that is easy to understand for non-technical users. It demonstrates:
@@ -317,7 +346,7 @@ The current project uses:
 ```php
 $servername = "localhost";
 $username = "root";
-$password = "root";
+$password = "";
 $dbname = "foodmood";
 ```
 
@@ -348,33 +377,6 @@ This is a practical foundation for a modest but realistic user-facing web applic
 - secure login and reset flows,
 - awareness of privacy and consent,
 - strong focus on user experience and simplicity.
-
----
-
-## Screenshots
-
-Below are key screens from the application, stored in the `screenshots` folder and ready to be showcased in the project portfolio.
-
-### Login screen
-![Login screen](screenshots/login.png)
-
-### Home dashboard
-![Home dashboard](screenshots/home.png)
-
-### Create account
-![Create account](screenshots/create_account.png)
-
-### Add meal entry
-![Add meal entry](screenshots/add_entry.png)
-
-### Meal history
-![Meal history](screenshots/history.png)
-
-### Analysis page
-![Analysis page](screenshots/analysis.png)
-
-### User agreement
-![User agreement](screenshots/user_agreement.png)
 
 ---
 
