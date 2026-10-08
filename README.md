@@ -346,7 +346,7 @@ The current project uses:
 ```php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "Sh@r1f123";
 $dbname = "foodmood";
 ```
 
